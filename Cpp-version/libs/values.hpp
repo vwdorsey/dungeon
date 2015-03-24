@@ -37,4 +37,31 @@
 #define max_room_x  20
 #define max_room_y  15
 
+// Game Settings
+#define default_num_mon 10
+
+// Control Settings
+#define num_pad_up 8
+#define num_pad_down 2
+#define num_pad_left 4
+#define num_pad_right 6
+#define num_pad_lfup 7
+#define num_pad_lfdn 1
+#define num_pad_rgup 9
+#define num_pad_rgdn 3
+#define kb_up 'k'
+#define kb_down 'j'
+#define kb_left 'h'
+#define kb_right 'l'
+#define kb_lfup 'y'
+#define kb_lfdn 'b'
+#define kb_rgup 'u'
+#define kb_rgdn 'n'
+#define go_upstairs '<'
+#define go_downstairs '>'
+#define rest ' '
+#define to_look_mode 'L'
+#define to_control_mode 27
+#define save_and_exit 'S'
+
 #endif

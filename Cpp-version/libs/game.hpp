@@ -1,6 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <cstdint>
+
 class game{
 	public:
 		game();
@@ -14,7 +16,7 @@ class game{
 	private:
 		struct cell{
 			uint8_t open; //0 = open, else 255.
-			uint8_t room; //255 = room, else 0.
+			uint8_t room_v; //255 = room, else 0.
 			uint8_t corridor; //255 = corridor, else 0;
 			uint8_t hardness; //Varies on space.
 			uint8_t stair; //0 if no, 1 if down, 2 if up.

@@ -13,7 +13,6 @@
 
 int main(int argc, char **argv)
 {
-	srand(time(NULL));
 	map* current_map = new map();
 	int num_mon = 10;
 	
