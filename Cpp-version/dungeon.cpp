@@ -17,7 +17,6 @@ int main(int argc, char **argv)
 	map* current_map = new map();
 	int num_mon = 10;
 	
-	std::cout << "Almost Done\n";
 	delete current_map;
 	return 0;
 }

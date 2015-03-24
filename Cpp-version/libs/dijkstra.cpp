@@ -10,7 +10,7 @@ using namespace std;
 		
 		for(int y = 0; y < columns; y++){
 			for(int x = 0; x < rows; x++){
-				if(layout[y][x].type != tile_type_immutable){
+				if(layout[y][x].type == tile_type_floor){
 					dij_node* dn = new dij_node();
 					dist[y][x] = 1000000;
 					dn -> x = x;
@@ -32,28 +32,28 @@ using namespace std;
 			int x = d -> x;
 			int y = d -> y;
 			
-			if(layout[y][x+1].type != tile_type_immutable) {
+			if(layout[y][x+1].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y][x+1]);
             }
-            if(layout[y+1][x].type != tile_type_immutable) {
+            if(layout[y+1][x].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y+1][x]);
             }
-            if(layout[y][x-1].type != tile_type_immutable) {
+            if(layout[y][x-1].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y][x-1]);
             }
-            if(layout[y-1][x].type != tile_type_immutable) {
+            if(layout[y-1][x].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y-1][x]);
             }
-            if(layout[y+1][x+1].type != tile_type_immutable) {
+            if(layout[y+1][x+1].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y+1][x+1]);
             }
-            if(layout[y-1][x+1].type != tile_type_immutable) {
+            if(layout[y-1][x+1].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y-1][x+1]);
             }
-            if(layout[y+1][x-1].type != tile_type_immutable) {
+            if(layout[y+1][x-1].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y+1][x-1]);
             }
-            if(layout[y-1][x-1].type != tile_type_immutable) {
+            if(layout[y-1][x-1].type == tile_type_floor) {
                 check_neighbor(queue, dist, d, nodes[y-1][x-1]);
             }
 		}
