@@ -148,7 +148,6 @@ void map::determine_paths(){
 }
 		
 void map::generate_corridors(int s_y, int s_x, int src_pnl, int d_y, int d_x){
-	dijkstra paths;
 	int cur_x = s_x;
 	int cur_y = s_y;
 	int i;
@@ -157,9 +156,8 @@ void map::generate_corridors(int s_y, int s_x, int src_pnl, int d_y, int d_x){
 		
 		if(src_pnl == 1){ //right side
 			if (i != 0) cur_x++;
-			layout[cur_y][cur_x].type = tile_type_immutable;
+			layout[cur_y][cur_x].type = tile_type_floor;
 			if(layout[cur_y+1][cur_x].type == tile_type_empty) layout[cur_y+1][cur_x].type = tile_type_wall;
-			if(layout[cur_y][cur_x-1].type == tile_type_empty) layout[cur_y][cur_x-1].type = tile_type_wall;
 			if(layout[cur_y+1][cur_x+1].type == tile_type_empty) layout[cur_y+1][cur_x+1].type = tile_type_wall;
 			if(layout[cur_y][cur_x+1].type == tile_type_empty) layout[cur_y][cur_x+1].type = tile_type_wall;
 			if(layout[cur_y-1][cur_x+1].type == tile_type_empty) layout[cur_y-1][cur_x+1].type = tile_type_wall;
@@ -167,77 +165,53 @@ void map::generate_corridors(int s_y, int s_x, int src_pnl, int d_y, int d_x){
 		
 		else{ //left side
 			if (i != 0) cur_x--;
-			layout[cur_y][cur_x].type = tile_type_immutable;
-			if(layout[cur_y-1][cur_x].type == tile_type_empty) layout[cur_y-1][cur_x].type = tile_type_wall;
+			layout[cur_y][cur_x].type = tile_type_floor;
+			if(layout[cur_y+1][cur_x].type == tile_type_empty) layout[cur_y+1][cur_x].type = tile_type_wall;
 			if(layout[cur_y][cur_x-1].type == tile_type_empty) layout[cur_y][cur_x-1].type = tile_type_wall;
+			if(layout[cur_y+1][cur_x-1].type == tile_type_empty) layout[cur_y+1][cur_x-1].type = tile_type_wall;
 			if(layout[cur_y-1][cur_x-1].type == tile_type_empty) layout[cur_y-1][cur_x-1].type = tile_type_wall;
-			if(layout[cur_y][cur_x+1].type == tile_type_empty) layout[cur_y][cur_x+1].type = tile_type_wall;
-			if(layout[cur_y-1][cur_x+1].type == tile_type_empty) layout[cur_y-1][cur_x+1].type = tile_type_wall;
-			/* 
-			if (i != 0) cur_x--;
-			set_type((t+((cur_y)+((cur_x)*160))), 3);
-			if(get_type((t+((cur_y-1)+((cur_x)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y)+((cur_x+1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x+1)*160))), 2);
-			*/	
 		}
-	paths.Dijkstra(this->layout, s_y, s_x, d_y, d_x);
+	}
 	
-	}
-	/*
-	//Would like to replace this with a Dijkstra's method at some point. It'll make the pathways more random, I think.
-	
-	if(cur_x < dest_x){
-		while(cur_x != dest_x){ //moves down
-			cur_x++;
-			set_type((t+((cur_y)+((cur_x-1)*160))), 3);
-			set_type((t+((cur_y)+((cur_x)*160))), 3);
-			if(get_type((t+((cur_y)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y+1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y+1)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y+1)+((cur_x)*160)))) == 1) set_type((t+((cur_y+1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y+1)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y+1)+((cur_x+1)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y)+((cur_x+1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x+1)*160))), 2);
-		}
-	}
-	else{
-		while(cur_x != dest_x){ //moves up
-			cur_x--;
-			set_type((t+((cur_y)+((cur_x)*160))), 3);
-			if(get_type((t+((cur_y)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y+1)+((cur_x)*160)))) == 1) set_type((t+((cur_y+1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y+1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y+1)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x-1)*160))), 2);
-		}
-	}
-	if(cur_y < dest_y){ 
-		while(cur_y != dest_y){
+	if(cur_y < d_y){ 
+		while(cur_y != d_y){
 			cur_y++;
-			set_type((t+((cur_y)+((cur_x)*160))), 3);
-			if(get_type((t+((cur_y)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y+1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x+1)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y)+((cur_x+1)*160))), 2);
+			layout[cur_y][cur_x].type = tile_type_floor;
+			wall_stamp(cur_y, cur_x);
 		}
 	}
 	else{
-		while(cur_y != dest_y){ 
+		while(cur_y != d_y){ 
 			cur_y--;
-			set_type((t+((cur_y)+((cur_x)*160))), 3);
-			if(get_type((t+((cur_y-1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x)*160))), 2);
-			if(get_type((t+((cur_y-2)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-2)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y)+((cur_x+1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x-1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x-1)*160))), 2);
-			if(get_type((t+((cur_y-1)+((cur_x+1)*160)))) == 1) set_type((t+((cur_y-1)+((cur_x+1)*160))), 2);
+			layout[cur_y][cur_x].type = tile_type_floor;
+			wall_stamp(cur_y, cur_x);
 		}
 	}
-	*/
+	
+	if(cur_x < d_x){
+		while(cur_x != d_x){ //moves down
+			cur_x++;
+			layout[cur_y][cur_x].type = tile_type_floor;
+			wall_stamp(cur_y, cur_x);
+		}
+	}
+	else{
+		while(cur_x != d_x){ //moves up
+			cur_x--;
+			layout[cur_y][cur_x].type = tile_type_floor;
+			wall_stamp(cur_y, cur_x);
+		}
+	}
+}
+
+void map::wall_stamp(int cur_y, int cur_x){
+	if(layout[cur_y][cur_x-1].type == tile_type_empty) layout[cur_y][cur_x-1].type = tile_type_wall;
+	if(layout[cur_y+1][cur_x-1].type == tile_type_empty) layout[cur_y+1][cur_x-1].type = tile_type_wall;
+	if(layout[cur_y-1][cur_x-1].type == tile_type_empty) layout[cur_y-1][cur_x-1].type = tile_type_wall;
+	if(layout[cur_y+1][cur_x].type == tile_type_empty) layout[cur_y+1][cur_x].type = tile_type_wall;
+	if(layout[cur_y-1][cur_x].type == tile_type_empty) layout[cur_y-1][cur_x].type = tile_type_wall;
+	if(layout[cur_y+1][cur_x+1].type == tile_type_empty) layout[cur_y+1][cur_x+1].type = tile_type_wall;
+	if(layout[cur_y][cur_x+1].type == tile_type_empty) layout[cur_y][cur_x+1].type = tile_type_wall;
+	if(layout[cur_y-1][cur_x+1].type == tile_type_empty) layout[cur_y-1][cur_x+1].type = tile_type_wall;
 }
 

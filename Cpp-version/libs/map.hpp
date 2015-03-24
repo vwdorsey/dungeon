@@ -22,6 +22,8 @@ class map{
 		char check_room_placement(int y_dim, int x_dim, int y, int x);
 		void determine_paths();
 		void generate_corridors(int s_y, int s_x, int src_pnl, int d_y, int d_x);
+		void wall_stamp(int cur_y, int cur_x);
+		
 		std::default_random_engine random;
 		std::uniform_int_distribution<int> column_dist;
 		std::uniform_int_distribution<int> row_dist;
