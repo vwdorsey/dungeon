@@ -1,0 +1,52 @@
+CHANGELOG - ASSIGNMENT 1.03
+
+2/26 - Project Start
+    
+    - Copied files from 1.04
+            
+    - Initial TODOs from 1.04
+        - Need to make it so that the intelligence and telepathic things actually have an effect.
+        - Need to integrate the paths so that the monsters, who are able to find the PC, can find the PC. 
+        - Need to modify the runtime code so that, on the player's death or once all monsters die, the game will end. (RESOLVED 3/3)
+        - Need to implement kill_all_characters so that it will fix all the memory losses due to not freeing the allocated characters. (RESOLVED 3/3)
+       
+2/28 
+    
+    - Performed work toward fixing issues from 1.04
+        - Path finding
+            - Made the Dijkstra function in path.c/h actually return a valid path from a current source to a destination (normally the player)
+        - Character Modifications
+            - Seperated the Character & Monster structs into different entities
+            - Rewrote the entire move_character function to move it away from only 1 step in 8 directions to just entering the difference in position
+            
+3/1
+
+    - Cleanup/Maintainance Tasks
+        - Removed surpressed code from generation.c that has been present since 1.01.
+            - Reason: Unnecessary and there are not plans to try and reincorporate it.
+    
+    - Added libs/defs.h
+        - From now on, this file will contain any definitions for tiles, attributes, things that may change, etc.
+        - This is more for simplicity sake, so I can change anything regarding the attributes or tiles quickly.
+        - Also will hold parameters for the game, such as map size, max number of rooms, etc for easy changes.    
+        
+3/2
+
+	- Fixed the path following capabilities of smart, telepathic monsters.
+		- Although it takes forever for them to reach the character, they manage to.
+		- Major bug occured when monster would reach character, as the path would end with 
+	-
+	- Bugfixing
+		- Program wouldn't compile due to a lot of circular including
+			- Fix: Add all structs to defs.h so that I wouldn't have to include so many things
+			- Works reasonably well
+		- A lot of typos, as usual.
+			- Fix was to track them down, as expected.
+
+3/3
+
+	Created display.c/.h
+		- It will contain pretty much any commands to make, update, and delete the ncurses display
+		- Functions it currently contains:
+			
+    

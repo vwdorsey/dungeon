@@ -1,0 +1,31 @@
+Assignment 1.05 - Putting Characters on the Map
+
+Does it work: A good amount of it does.
+
+What works:
+	- The PC can move and ncurses tracks the character as it moves.
+		(Also, I avoided the whole 'camera stays in one place until pc hits edge' thing.)
+	- Smart, telepathic monsters now accurately follow paths and can make it to the character.
+	- The code recieved some refactorization and rewritting to make it work better
+	- Moving the character is a lot faster. Turn system might need further optimization/rewriting.
+
+What doesn't work:
+    - The dumb telepathic and smart non-telepathic monsters still don't move correctly, I think
+    - Stairs haven't been implemented as of yet
+    - The entire look mode stuff.
+
+What should you look at:
+		-display.c/.h: Contains pretty much all the ncurses stuff for making and updating windows.
+			- Contains 3 functions:
+				- init_screen: Contains all ncurses functions to initialize the screen
+				- redraw: Given a map and a player, creates a char array of a portion of the map and fills the ncurses screen.
+				- end_session: Ends the window session.
+		-dungeon-main.c: Has the commands to drive the display
+			- Edits the commands to draw the map and have the monsters move around.
+                    
+NOTE: There is a fairly small delay between commands to the PC due to issues with the whole turn-based stuff.
+		- I've done some to fix this, but it still seems to be present in some cases.
+	  Also, there are no staircases on the map, so the supporting code present doesn't work.
+		- When I tried, it didn't really work properly. I did attempt at debugging, but I think
+		  there are more issues present within the code that is creating issues with the routine.
+	 
