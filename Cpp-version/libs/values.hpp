@@ -64,4 +64,9 @@
 #define to_control_mode 27
 #define save_and_exit 'S'
 
+//Player Settings
+#define pc_sprite '@'
+#define pc_speed 10
+
+
 #endif

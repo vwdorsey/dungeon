@@ -1,5 +1,5 @@
 /*
- * dungeon-main.cpp - The main running file for my Dungeon Crawler.
+ * dungeon.cpp - The main running file for my Dungeon Crawler.
  * 
  * 
  * 
@@ -9,14 +9,21 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
-#include "libs/map.hpp"
+#include "libs/game.hpp"
+#include "libs/display.hpp"
 
 int main(int argc, char **argv)
 {
-	map* current_map = new map();
-	int num_mon = 10;
+	srand(time(NULL)); //Used for time-based random number generation.
+	game* current_game = new game(); 
+	display disp;
 	
-	delete current_map;
+	disp.init_display();
+	disp.redraw(current_game->current.layout, current_game->me);
+	while(getchar() != 27){}
+	
+	disp.end_session();
+	delete current_game;
 	return 0;
 }
 

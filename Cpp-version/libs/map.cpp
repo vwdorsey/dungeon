@@ -9,10 +9,10 @@
 #include <cstdlib>
 #include <random>
 #include "values.hpp"
-#include "map.hpp"
 #include "dijkstra.hpp"
+#include "map.hpp"
 
-map::map(){
+map::map(){ 
 	room_count = min_rooms + (random() % ((max_rooms - min_rooms) + 1));
 	
 	random.seed(rand());
@@ -22,8 +22,6 @@ map::map(){
 	init_map();
 	place_rooms();
 	determine_paths();
-	
-	design_output();
 	}
 
 map::~map(){

@@ -2,6 +2,7 @@
 #define DISPLAY_HPP
 
 #include "structs.hpp"
+#include "values.hpp"
 
 	class display{
 		public:

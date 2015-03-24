@@ -40,6 +40,7 @@
         int pos[2];
         uint8_t speed;
         uint16_t attribs;
+        uint8_t last_pc_pos[2];
         point* path_to_player;
         unsigned char alive;
     };
@@ -49,7 +50,7 @@
         int pos[2];
         uint8_t speed;
         unsigned char alive;
-        unsigned int priority;
+        unsigned int priority; //What was this being used for?
     };
 
 

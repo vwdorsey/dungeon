@@ -2,6 +2,9 @@
 #define GAME_HPP
 
 #include <cstdint>
+#include "map.hpp"
+#include "structs.hpp"
+#include "pqueue.hpp"
 
 class game{
 	public:
@@ -9,6 +12,10 @@ class game{
 		~game();
 	
 		map current;
+		Player* me;
+		Monster* mon_list;
+		pqueue turn_queue;
+		
 		void save_game();
 		void load_game();
 		void change_floor();
@@ -20,7 +27,7 @@ class game{
 			uint8_t corridor; //255 = corridor, else 0;
 			uint8_t hardness; //Varies on space.
 			uint8_t stair; //0 if no, 1 if down, 2 if up.
-		}
+		};
 		
 		struct npc_data{
 			char sprite;
@@ -32,13 +39,13 @@ class game{
 			uint32_t sequence;
 			uint32_t next_turn;
 			uint8_t reserved[20];
-		}
+		};
 		
 		struct game_data{
 			uint32_t save_version;
 			uint32_t filesize;
 			uint32_t eof;
-			cell map[columns][rows];
+			cell map[columns][rows]; //Will write on save.
 			uint16_t num_rooms;
 			//Room Data is in Map already.
 			uint8_t pc_position[2]; //x,y format
@@ -47,6 +54,6 @@ class game{
 			uint16_t num_npcs;
 			//Due to num_npcs being dynamic, the npc list will have to be generated on save.
 		};
-}		
+};
 
 #endif

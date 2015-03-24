@@ -1,10 +1,10 @@
-dungeon: dungeon.o map.o pqueue.o dijkstra.o
-	g++ dungeon.o map.o pqueue.o dijkstra.o -std=c++11 -g -o dungeon
+dungeon: dungeon.o map.o pqueue.o dijkstra.o display.o game.o
+	g++ dungeon.o map.o pqueue.o dijkstra.o display.o game.o -std=c++11 -lncurses -g -o dungeon
 	
-dungeon.o: dungeon.cpp libs/map.hpp
+dungeon.o: dungeon.cpp libs/game.hpp libs/display.hpp
 	g++ dungeon.cpp -std=c++11 -g -c
 	
-map.o: libs/map.cpp libs/structs.hpp
+map.o: libs/map.cpp
 	g++ libs/map.cpp -std=c++11 -g -c
 
 pqueue.o: libs/pqueue.cpp
@@ -12,6 +12,12 @@ pqueue.o: libs/pqueue.cpp
 
 dijkstra.o: libs/dijkstra.cpp
 	g++ libs/dijkstra.cpp -std=c++11 -g -c
+	
+display.o: libs/display.cpp
+	g++ libs/display.cpp -std=c++11 -lncurses -g -c
+	
+game.o: libs/game.cpp
+	g++ libs/game.cpp -std=c++11 -g -c 
 	
 clean:
 	rm -f *.o dungeon fc
