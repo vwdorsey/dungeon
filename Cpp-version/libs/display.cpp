@@ -12,12 +12,6 @@ void display::init_display(){
 	nonl();
 	cbreak();
 	echo();
-	
-	if(has_colors()){
-		start_color();
-		
-		init_pair(1, COLOR_RED, COLOR_BLACK);
-	}
 }
 
 void display::redraw(tile layout[columns][rows], Player* me){

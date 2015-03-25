@@ -8,13 +8,14 @@
 
 class game{
 	public:
-		game();
+		game(int npcs);
 		~game();
 	
 		map current;
 		Player* me;
-		//Monster* mon_list;
-		//pqueue turn_queue;
+		Monster* mon_list;
+		pqueue turn_queue;
+		int num_npcs;
 		
 		void save_game();
 		void load_game();
