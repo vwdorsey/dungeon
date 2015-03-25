@@ -37,14 +37,20 @@ void map::init_map(){
 			if(y == 0 || y == columns-1){
 				layout[y][x].type = tile_type_immutable;
 				layout[y][x].hardness = 9;
+                layout[y][x].pc = NULL;
+                layout[y][x].mon = NULL;
 			}
 			else if(x == 0 || x == rows-1){
 				layout[y][x].type = tile_type_immutable;
 				layout[y][x].hardness = 9;
+                layout[y][x].pc = NULL;
+                layout[y][x].mon = NULL;
 			}
 			else{
 				layout[y][x].type = tile_type_empty;
 				layout[y][x].hardness = (rand() % 8) + 1;
+                layout[y][x].pc = NULL;
+                layout[y][x].mon = NULL;
 			}
 		}
 	}

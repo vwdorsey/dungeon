@@ -13,8 +13,8 @@ class game{
 	
 		map current;
 		Player* me;
-		Monster* mon_list;
-		pqueue turn_queue;
+		//Monster* mon_list;
+		//pqueue turn_queue;
 		
 		void save_game();
 		void load_game();

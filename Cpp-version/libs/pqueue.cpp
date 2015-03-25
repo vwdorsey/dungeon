@@ -8,9 +8,11 @@
 	}
 	
 	pqueue::~pqueue(){
-		while(size != 0){
-			void* item = pull();
-		}
+        if(this != NULL){
+            while(size != 0){
+                void* item = pull();
+            }
+        }
 	}
 	
 	void pqueue::push(void* item, int priority){

@@ -1,8 +1,8 @@
 #include "game.hpp"
 
 	game::game(){
-		current = map(); //Do I have to overload an operator for this?
-		
+		current = map(); 
+        
 		me = new Player();
 		me->Sprite=pc_sprite;
 		me->speed=pc_speed;
