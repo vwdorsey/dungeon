@@ -166,6 +166,7 @@
 	}
 	
 	int game::turn_system(){
+		if(turn_queue.get_size() == 0) return -1;
 		int next_priority = turn_queue.lowest_priority();
 		Monster* mon = (Monster*) turn_queue.pull();
 		if(next_priority < me->priority){
@@ -203,7 +204,7 @@
 		if(x == 2) x = -1;
 		if(y == 2) y = -1;
 		
-		if(mon -> attribs == IS_SMART + TELEPATHIC){
+		if(mon -> attribs == IS_SMART + TELEPATHIC){ 
 			if(mon->last_pc_pos[0] != me->pos[0] || mon->last_pc_pos[1] != me->pos[1]){
 				mon->path_to_player = path_maker.Dijkstra(current.layout, mon->pos[0], mon->pos[1], me->pos[0], me->pos[1]);
 				mon->last_pc_pos[0] = me->pos[0];

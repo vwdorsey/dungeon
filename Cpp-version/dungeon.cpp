@@ -22,8 +22,9 @@ int main(int argc, char **argv)
 	disp.redraw(current_game->current.layout, current_game->me);
 	while(endflag == 1){
 		endflag = current_game->user_move();
-		while(turn_status){
+		while(turn_status == 1){
 			turn_status = current_game->turn_system();
+			if(turn_status == -1) endflag = 0;
 		}
 		disp.redraw(current_game->current.layout, current_game->me);
 	}

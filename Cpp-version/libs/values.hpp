@@ -38,7 +38,7 @@
 #define max_room_y  15
 
 // Game Settings
-#define default_num_mon 10
+#define default_num_mon 1 
 
 // Control Settings
 #define num_pad_up '8'

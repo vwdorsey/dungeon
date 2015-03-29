@@ -1,7 +1,7 @@
 #include <iostream>
 #include "dijkstra.hpp"
 
-using namespace std;
+using namespace std; 
 	
 	point* dijkstra::Dijkstra(tile layout[columns][rows], int start_y, int start_x, int dest_y, int dest_x){
 		pqueue* queue = new pqueue();
