@@ -1,0 +1,8 @@
+# Compiled objects
+*.o
+
+# Pre-Compiled Headers
+*.gch
+
+# Executables
+dungeon
