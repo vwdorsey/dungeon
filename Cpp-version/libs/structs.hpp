@@ -37,22 +37,32 @@
 
     struct Monster{
         unsigned char Sprite;
-        int pos[2];
+        int pos[2]; //y,x format
         uint8_t speed;
         uint16_t attribs;
-        uint8_t last_pc_pos[2];
+        uint8_t last_pc_pos[2]; //y,x format
         point* path_to_player;
         unsigned char alive;
     };
 
     struct Player{
         unsigned char Sprite;
-        int pos[2];
+        int pos[2]; //y,x format
         uint8_t speed;
         unsigned char alive;
         unsigned int priority; //What was this being used for?
     };
 
+/*
+ * A struct used with the turn system to identify the character.
+ * 
+ */
+
+struct char_info{
+	char type;
+	Player* pc;
+	Monster* mon;
+};
 
 /*
  * 

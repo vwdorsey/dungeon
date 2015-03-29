@@ -2,9 +2,7 @@
 #define GAME_HPP
 
 #include <cstdint>
-#include "map.hpp"
-#include "structs.hpp"
-#include "pqueue.hpp"
+#include "dijkstra.hpp"
 
 class game{
 	public:
@@ -20,7 +18,10 @@ class game{
 		void save_game();
 		void load_game();
 		void change_floor();
-		void turn_system();
+		int turn_system();
+		
+		int user_move();
+		int interpret_input(char input);
 	private:
 		struct cell{
 			uint8_t open; //0 = open, else 255.
@@ -55,6 +56,16 @@ class game{
 			uint16_t num_npcs;
 			//Due to num_npcs being dynamic, the npc list will have to be generated on save.
 		};
+		
+		void move_player(int d_y, int d_x);
+		void move_monster(Monster *mon, int d_y, int d_x);
+		void determine_mon_next_move(Monster *mon);
+		void check_monster_at_player(Monster *mon);
+		
+		std::uniform_int_distribution<int> rand_mon_move;
+		std::default_random_engine random;
+		
+		int mode; //0 for Control, 1 for Look
 };
 
 #endif

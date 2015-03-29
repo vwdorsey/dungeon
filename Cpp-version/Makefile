@@ -1,7 +1,7 @@
 dungeon: dungeon.o map.o pqueue.o dijkstra.o display.o game.o
 	g++ dungeon.o map.o pqueue.o dijkstra.o display.o game.o -std=c++11 -lncurses -g -o dungeon
 	
-dungeon.o: dungeon.cpp libs/game.hpp libs/display.hpp
+dungeon.o: dungeon.cpp
 	g++ dungeon.cpp -std=c++11 -g -c
 	
 map.o: libs/map.cpp

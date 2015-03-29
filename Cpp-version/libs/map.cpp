@@ -16,8 +16,8 @@ map::map(){
 	room_count = min_rooms + (random() % ((max_rooms - min_rooms) + 1));
 	
 	random.seed(rand());
-	column_dist = std::uniform_int_distribution<int>(0, columns);
-	row_dist = std::uniform_int_distribution<int>(0, rows);
+	column_dist = std::uniform_int_distribution<int>(0, columns-1);
+	row_dist = std::uniform_int_distribution<int>(0, rows-1);
 	
 	init_map();
 	place_rooms();
