@@ -133,10 +133,7 @@
 			else if(mon_list[i].attribs = 2) mon_list[i].Sprite = '2';
 			else mon_list[i].Sprite = '3';
 			
-			char_info* new_mon = new char_info();
-			new_mon->type = 'm';
-			new_mon->mon = &mon_list[i];
-			turn_queue.push(new_mon, mon_list[i].speed + pc_speed);
+			turn_queue.push(&mon_list[i], mon_list[i].speed + pc_speed);
 		}
 		
 		int upstair_y = 0;
