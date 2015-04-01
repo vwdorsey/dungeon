@@ -2,6 +2,8 @@
 
 	game::game(int npcs){
 		current = map();
+		mon_turns=0;
+		turn=0;
 		
 		random.seed(rand());
 		rand_mon_move = std::uniform_int_distribution<int>(-1, 1);
@@ -9,7 +11,7 @@
 		me = new Player();
 		me->Sprite=pc_sprite;
 		me->speed=pc_speed;
-		me->alive=255;
+		me->alive=1;
 		me->priority=pc_speed;
 		while(me->pos[0] == 0 && me->pos[1] == 0){
 			int x = (rand()%(rows-2)) + 1;
@@ -21,33 +23,33 @@
 			}
 		}
 		
-		mon_list = new Monster[npcs]();
 		num_npcs = npcs;
 		
-		for(int i = 0; i < num_npcs; i++){
-			while(mon_list[i].pos[0] == 0 && mon_list[i].pos[1] == 0){
+		for(int i = 0; i <= num_npcs; i++){
+			Monster* mon = new Monster();
+			while(mon->pos[0] == 0 && mon->pos[1] == 0){
 				int x = (rand()%(rows-2)) + 1;
 				int y = (rand()%(columns-2)) + 1;
 				if(current.layout[y][x].type == tile_type_floor){
-					mon_list[i].pos[0] = y;
-					mon_list[i].pos[1] = x;
-					current.layout[y][x].mon = &mon_list[i];
+					mon->pos[0] = y;
+					mon->pos[1] = x;
+					current.layout[y][x].mon = mon;
 				}
 			}
-			mon_list[i].speed = 5 + (rand()%16);
-			mon_list[i].attribs = 0;
-			mon_list[i].path_to_player = NULL;
-			mon_list[i].last_pc_pos[0] = 255;
-			mon_list[i].last_pc_pos[1] = 255;
-			mon_list[i].alive = 255;
+			mon->speed = pc_speed + (rand()%16);
+			mon->attribs = 0;
+			mon->path_to_player = NULL;
+			mon->last_pc_pos[0] = 255;
+			mon->last_pc_pos[1] = 255;
+			mon->alive = 1;
 			
-			mon_list[i].attribs = (rand() % 4);
-			if(mon_list[i].attribs = 0) mon_list[i].Sprite = '0';
-			else if(mon_list[i].attribs = 1) mon_list[i].Sprite = '1';
-			else if(mon_list[i].attribs = 2) mon_list[i].Sprite = '2';
-			else mon_list[i].Sprite = '3';
+			mon->attribs = (rand() % 4);
+			if(mon->attribs = 0) mon->Sprite = '0';
+			else if(mon->attribs = 1) mon->Sprite = '1';
+			else if(mon->attribs = 2) mon->Sprite = '2';
+			else mon->Sprite = '3';
 			
-			turn_queue.push(&mon_list[i], mon_list[i].speed + pc_speed);
+			turn_queue.push(mon, mon->speed + pc_speed);
 		}
 		
 		int upstair_y = 0;
@@ -78,7 +80,6 @@
 	
 	game::~game(){
 		delete me;
-		delete mon_list;
 		//delete &current;
 	}
 
@@ -108,35 +109,31 @@
 			}
 		}
 		
-		mon_list = new Monster[num_npcs]();
-		
-		for(int i = 0; i < num_npcs; i++){
-			while(mon_list[i].pos[0] == 0 && mon_list[i].pos[1] == 0){
+		for(int i = 0; i <= num_npcs; i++){
+			Monster* mon = new Monster();
+			while(mon->pos[0] == 0 && mon->pos[1] == 0){
 				int x = (rand()%(rows-2)) + 1;
 				int y = (rand()%(columns-2)) + 1;
 				if(current.layout[y][x].type == tile_type_floor){
-					mon_list[i].pos[0] = y;
-					mon_list[i].pos[1] = x;
-					current.layout[y][x].mon = &mon_list[i];
+					mon->pos[0] = y;
+					mon->pos[1] = x;
+					current.layout[y][x].mon = mon;
 				}
 			}
-			mon_list[i].speed = 5 + (rand()%16);
-			mon_list[i].attribs = 0;
-			mon_list[i].path_to_player = NULL;
-			mon_list[i].last_pc_pos[0] = 255;
-			mon_list[i].last_pc_pos[1] = 255;
-			mon_list[i].alive = 255;
+			mon->speed = 5 + (rand()%16);
+			mon->attribs = 0;
+			mon->path_to_player = NULL;
+			mon->last_pc_pos[0] = 255;
+			mon->last_pc_pos[1] = 255;
+			mon->alive = 255;
 			
-			mon_list[i].attribs = (rand() % 4);
-			if(mon_list[i].attribs = 0) mon_list[i].Sprite = '0';
-			else if(mon_list[i].attribs = 1) mon_list[i].Sprite = '1';
-			else if(mon_list[i].attribs = 2) mon_list[i].Sprite = '2';
-			else mon_list[i].Sprite = '3';
+			mon->attribs = (rand() % 4);
+			if(mon->attribs = 0) mon->Sprite = '0';
+			else if(mon->attribs = 1) mon->Sprite = '1';
+			else if(mon->attribs = 2) mon->Sprite = '2';
+			else mon->Sprite = '3';
 			
-			char_info* new_mon = new char_info();
-			new_mon->type = 'm';
-			new_mon->mon = &mon_list[i];
-			turn_queue.push(new_mon, mon_list[i].speed + pc_speed);
+			turn_queue.push(mon, mon->speed + pc_speed);
 		}
 		
 		int upstair_y = 0;
@@ -170,7 +167,7 @@
 		int next_priority = turn_queue.lowest_priority();
 		Monster* mon = (Monster*) turn_queue.pull();
 		if(next_priority < me->priority){
-			if(!(mon->alive)) delete mon;
+			if(mon->alive == 0) delete mon;
 			else{
 				determine_mon_next_move(mon);
 				turn_queue.push(mon, next_priority + mon->speed);
@@ -200,6 +197,8 @@
 		int y = rand_mon_move(random);
 		int x = rand_mon_move(random);
 		dijkstra path_maker = dijkstra();
+		
+		mon_turns++;
 		
 		if(x == 2) x = -1;
 		if(y == 2) y = -1;
@@ -263,7 +262,8 @@
 	}
 	
 	int game::user_move(){
-		me->priority += me->speed;
+		me->priority += pc_speed;
+		turn++;
 		
 		int status_flag = 1;
 		char sys_input = 0;

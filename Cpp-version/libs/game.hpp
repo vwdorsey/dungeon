@@ -14,6 +14,8 @@ class game{
 		Monster* mon_list;
 		pqueue turn_queue;
 		int num_npcs;
+		int turn;
+		int mon_turns;
 		
 		void save_game();
 		void load_game();

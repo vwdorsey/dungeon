@@ -5,7 +5,10 @@
  * structs.hpp - Defines a number of structs carried over from the C version of this project.
  */
  
+#include <string>
+#include <vector>
 #include <cstdint>
+#include "values.hpp"
 
 /*
  * 
@@ -92,5 +95,27 @@ struct char_info{
         unsigned char x_start; //X start
         unsigned char y_start; //Y start
     };
+    
+/*
+ * Structs derived from the parser code.
+ * 
+ */ 
+
+struct dice{
+	int base; //Base Value
+	int num_dice; //Number of Dice used
+	int sides; //How many sides each die has.
+};
+
+struct mon_template{
+	std::string Name; //Name of the monster
+	char Sprite; //Monster Sprite
+	std::string Color; //Color the monster should be displayed as
+	std::vector<std::string> Description; //Must be no longer than 77 chars in width;
+	uint16_t Attribs; //Attributes that the monster has
+	dice Speed; // Dice values for Speed
+	dice HP; // Dice values for HP
+	dice Damage; // Dice values for Damage/Attack
+};
 
 #endif

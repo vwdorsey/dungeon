@@ -1,0 +1,52 @@
+Assignment 1.07 - Parsing Monster Definitions
+
+Does it work? Yes (Yay!)
+
+How does it work? 
+	Dungeon is executed and, if no arguments are present, the parser is called	
+	The Parser will look for a text file in the directory ~/.rlg229/ called monster_desc.txt.
+		- The filename itself is editable by changing the field 'defs_filename' in values.hpp.
+		- The path can't be changed.
+		- You will have to provide one yourself. This will also create the directory if not present
+			- It won't create the file itself though.
+		- File is loaded into a string vector, which is easier to access and doesn't require the file to be open afterward
+		- File is then closed and the vector is used to parse the information.
+		- Each line is ran through the parser and parser looks for the keywords given on the assignment spec
+		- Once file is fully parsed, another vector, of type mon_template, is returned, containing all the monster information.
+	For this assignment, all we had to do is output, so program goes ahead and outputs the file, formatted properly.
+		- This is done by the output_mon_defs function in the parser.
+		- It iterates through the definition vector and outputs them in a nice format.
+	Function then returns, not calling the game (for this assignment only.)
+	
+Code locations:
+	parser.cpp/.hpp - The parser itself
+		- Contains only two functions:
+			- parse_defs_file
+				- This is the parser, in it's entirety.
+				- It takes a data file in and looks for the proper data for each field.
+				- A couple error prevention measures have been taken, but not as many as I'd like.
+			- output_mon_defs
+				- This is the outputter for monster definitions.
+				- It is properly formatted and able to show all parsed in data.
+	structs.hpp - Contains two data structures
+		- mon_template
+			- Holds all information for a properly parsed in monster.
+			- Information on the data fields will be in the code commentary.
+		- dice
+			- Holds information related to dice values.
+			- Currently used for Damage, HP, and Speed Dice values.
+			- Information of the data fields will be in the code commentary.
+	values.hpp - Contains a setting field for the file
+		- Name is defs_filename, as mentioned above.
+	dungeon.cpp - Contains the code to call the parser, along with some error prompts.
+		- If you really want to see this, look at lines 49-61.
+		
+Notes:
+	- When you run dungeon with no args, it will only show you the parser output.
+	- If you really need to run the game, which I've been told is unnecessary, just
+	put any argument after ./dungeon.
+	
+	- Also, the game is not functioning properly at this point due to an error in the
+	new turn system. I am working on this and advise that the game not be played for now.
+	Besides, the save/load system doesn't do anything yet. This is due to me rewriting the
+	entire game in C++, which has been a longer task than expected, but is turning out nicely.

@@ -4,8 +4,8 @@
 // Attributes Block
 #define IS_SMART        1
 #define TELEPATHIC      2
-#define BIT2            4
-#define BIT3            8
+#define TUNNEL          4
+#define PASS            8
 #define BIT4            16
 #define BIT5            32
 #define BIT6            64
@@ -38,7 +38,8 @@
 #define max_room_y  15
 
 // Game Settings
-#define default_num_mon 1 
+#define default_num_mon 10
+#define defs_filename "monster_desc.txt"
 
 // Control Settings
 #define num_pad_up '8'
