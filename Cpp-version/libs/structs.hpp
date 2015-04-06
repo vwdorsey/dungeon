@@ -57,17 +57,6 @@
     };
 
 /*
- * A struct used with the turn system to identify the character.
- * 
- */
-
-struct char_info{
-	char type;
-	Player* pc;
-	Monster* mon;
-};
-
-/*
  * 
  * Structs used for the Map itself
  * 
