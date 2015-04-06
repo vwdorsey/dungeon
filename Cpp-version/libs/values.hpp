@@ -1,7 +1,7 @@
 #ifndef VALUES_HPP
 #define VALUES_HPP
 
-// Attributes Block
+// Monster Attributes Block
 #define IS_SMART        1
 #define TELEPATHIC      2
 #define TUNNEL          4
@@ -18,6 +18,29 @@
 #define BIT13           8192
 #define BIT14           16386
 #define BIT15           32768
+
+// Object Attributes Block
+#define WEAPON       	1
+#define OFFHAND     	2
+#define RANGED         	4
+#define ARMOR           8
+#define HELMET          16
+#define CLOAK           32
+#define GLOVES          64
+#define BOOTS           128
+#define RING            256
+#define AMULET          512
+#define LIGHT           1024
+#define SCROLL          2048
+#define BOOK           	4096
+#define FLASK           8192
+#define GOLD           	16386
+#define AMMUNITION		32768
+#define FOOD			65536
+#define WAND			131702
+#define CONTAINER		262144
+//Space left blank for expansions.
+#define IS_EQUIPMENT	2147483648
 
 // Tilings
 #define tile_type_wall      '+'

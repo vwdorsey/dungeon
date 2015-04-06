@@ -118,4 +118,19 @@ struct mon_template{
 	dice Damage; // Dice values for Damage/Attack
 };
 
+struct obj_template{
+	std::string Name; //Name of the object
+	std::vector<std::string> Description; //Must be no longer than 77 chars in width;
+	uint32_t Type; //Object Type. Populated using a bitfield.
+	std::string Color; //Color the Object should be displayed as
+	dice Hit; // Dice values for Hit Bonus
+	dice Damage; // Dice values for Damage/Attack Bonus
+	dice Dodge; // Dice values for Dodge/Evasion Bonus
+	dice Defense; // Dice values for Defense/Block Bonus given to Character
+	dice Weight; //Dice values for Weight of object.
+	dice Speed; //Dice values for Speed Bonus object gives to character
+	dice SpecAttr; //Dice values for A special attribute value for each object.
+	dice Value; //Dice values for Value of object in game in some currency.
+};
+
 #endif
