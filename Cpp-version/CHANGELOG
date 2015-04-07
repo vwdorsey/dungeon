@@ -1,70 +1,25 @@
-Assignment 1.07 - Parsing Monster Definitions
+Assignment 1.08 - Parsing Object Definitions
 
-(NOTE: I wrote the entire parser in one day, so this may look like not a lot happened.)
+Monday, 4/6
+	
+	- Started the assignment by creating necessary structs, attributes, and function headers for 1.08
+		- Created the struct obj_template
+			- It contains all the information fields for 1.08
+			- It should match the specification
+		- Also created an defined
 
-3:10pm - Started the project in a seperate file to make it easy to test the new parser.
-			- Started by looking up a small tutorial on how to load a document using ifstream
-			- Copied the monster definitions from assignment spec to a text file
-			- Able to read file line for line
-			- Placed all lines of text into a string vector
-			- Able to read file from string vector.
-			- Created the mon_template and dice structs for actual parsing.
-			- Made a big for loop and populated it with if statements to parse data.
-			- They used the string find() function to see if a field existed on that line
-				- Works quite well actually.
-			- Filled the Name, Sprite, and Color loops first
-				- They all needed only either a substring or one char.
-				- They were easy.
-			- Made the dice loops next
-				- A bit more complicated.
-					- Used substrings to get numbers as strings.
-					- Used atoi to get numbers from substrings
-					- Required some fiddling later to get the numbers right.
-			- Ability loop was next
-				- Simply a 'if you find this, then do math' loop.
-				- Didn't take long once I thought about how to do it.
-			- Description loop was last
-				- Sets a flag and then the flag function recorded the data.
-					- Flag was unset on finding the line containing one period.
-			- Display function was made
-				- Literally just displayed the data to see if I got it right.
-			- All of this took about 3-4 hours to do, including time to figure out functions
+	- Worked on checking the 1.07 code, which it's based on, for memory leaks
+		- Turns out that there was a memory leak related to the new objects
+			-Basically, the program would create objects, but was unable to delete them
+			-Spent around 2-3 hours working on this.
+		- This issue has been fixed for the 1.07 code
+			- Problem was that I created objects vs pointers to objects
+			- Pointers are easy to delete/free, objects arent
+			- Trying to delete said objects would cause Seg. Faults
+			- 
 
-9:50pm			
-			- Code was then transferred, painfully, to the project.
-				- Took about an hour to solve all the problems.
-				- Some are detailed below
-			- Display function was updated with proper formatting.
-				- Looks readable now.
-			- Made it so that the executable showed the parser output instead of the game
-				- Game can be ran by adding any argument to the executable.
-		
-11:00	- Started writing README
-		- Made minor changes to code.
-		
-11:50pm - Made last minute changes and finished the CHANGELOG and the README.
-		- Assignment Finished.
-		
-- Prominent bugs:
-	- A majority of the bugs occured during the transfer of the code to the RLG.
-		- Major one was moving the dice and ability reading code to functions
-			- Outputs would be completely wrong
-			- Instead of trying to make it work, I moved the code back
-			- Moving it back to original worked like a charm
-		- Functions not wanting to work or the code not recognizing functions
-			- Forgot to add the <class>:: stuff. Still getting used to this.
-		- Odd errors where the code wouldn't be able to find variables that should've been in scope
-			- I don't really know why it couldn't see them.
-			- Moving the variables closer to the code fixed it.
-		- Parser functions couldn't be called without objects.
-			- Was trying to use <class>::[local function] when calling them.
-			- Fixed it by getting rid of the <class>:: from callees and adding it to the caller.
-			- Ended up deleting the trouble functions anyway.
-	- There were a couple during the development in the seperate file, such as:
-		- Trying to display the description causing a seg fault
-			- Fix: Was trying to increment wrong variable.
-			- Only saw this when I got blank dice values for a parsed monster after commenting code out.
-	- Others mainly revolved around forgetting things, such as:
-		- Semi-colons (=])
-		- System Library Includes
-		- Other library header files
+Tuesday, 4/7
+
+	- Fixed more memory leak problems
+		- There were some issues related to the 1.07 code
+			- These issues 

@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 			parser_system.output_obj_defs(obj_defs);
 		}
 		
-		//parser_system.kill_obj_defs(obj_defs);
+		parser_system.kill_obj_defs(obj_defs);
 	}
 }
 

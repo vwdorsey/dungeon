@@ -152,7 +152,7 @@ std::vector<obj_template*> parser::parse_objs_file(){
 	
 	defspath = (char*)malloc(strlen(path) + strlen(objs_filename) + 4);
 	sprintf(defspath, "%s%s", path, objs_filename);
-	
+	free(path);
 	std::string in_string; 
 	std::vector<std::string> in_store;
 	std::vector<obj_template*> def_store;
@@ -256,6 +256,7 @@ std::vector<obj_template*> parser::parse_objs_file(){
 			on_valid_object_def = 0;
 		}
 	}
+	free(defspath);
 	return def_store;
 }
 
@@ -316,5 +317,4 @@ void parser::kill_obj_defs(std::vector<obj_template*> defs){
 		delete(obj);
 		defs.pop_back();
 	}
-	delete &defs;
 }
