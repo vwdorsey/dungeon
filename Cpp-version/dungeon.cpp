@@ -13,12 +13,15 @@
 
 int main(int argc, char **argv)
 {
-	if(argc > 1) {
+	parser parser_system;
+	
+	if(argc == 2) {
 	srand(time(NULL)); //Used for time-based random number generation.
 	game* current_game = new game(default_num_mon); 
 	display disp;
 	int endflag = 1;
 	int turn_status = 1;
+	
 	
 	disp.init_display();
 	disp.redraw(current_game->current.layout, current_game->me);
@@ -32,7 +35,7 @@ int main(int argc, char **argv)
 		disp.redraw(current_game->current.layout, current_game->me);
 	}
 	
-	disp.end_session();
+	disp.end_session(); 
 	std::cout << current_game->turn;
 	std::cout << '\n';
 	std::cout << current_game->mon_turns;
@@ -46,10 +49,9 @@ int main(int argc, char **argv)
 	delete current_game;
 	return 0;
 	}
-	else {
-		parser parser_system;
+	else if(argc == 3){
 		std::cout << "Parsing the Monster Definitions located in " << defs_filename << '\n';
-		std::vector<mon_template> mon_defs = parser_system.parse_defs_file();
+		std::vector<mon_template*> mon_defs = parser_system.parse_defs_file();
 		if(mon_defs.size() == 0){
 			std::cout << "Either there were no defs in the file or the file doesn't exist." << '\n';
 			std::cout << "Please make sure that the file exists." << '\n';
@@ -58,6 +60,22 @@ int main(int argc, char **argv)
 			std::cout << '\n';
 			parser_system.output_mon_defs(mon_defs);
 		}
+		
+		parser_system.kill_mon_defs(mon_defs);
+	}
+	else{
+		std::cout << "Parsing the Object Definitions located in " << objs_filename << '\n';
+		std::vector<obj_template*> obj_defs = parser_system.parse_objs_file();
+		if(obj_defs.size() == 0){
+			std::cout << "Either there were no defs in the file or the file doesn't exist." << '\n';
+			std::cout << "Please make sure that the file exists." << '\n';
+		}
+		else{
+			std::cout << '\n';
+			parser_system.output_obj_defs(obj_defs);
+		}
+		
+		//parser_system.kill_obj_defs(obj_defs);
 	}
 }
 

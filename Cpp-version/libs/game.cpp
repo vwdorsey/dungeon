@@ -133,11 +133,7 @@
 			else if(mon->attribs = 2) mon->Sprite = '2';
 			else mon->Sprite = '3';
 			
-<<<<<<< HEAD
 			turn_queue.push(mon, mon->speed + pc_speed);
-=======
-			turn_queue.push(&mon_list[i], mon_list[i].speed + pc_speed);
->>>>>>> 9e843b8def9bc16c126f80194d2e6539989aa7b7
 		}
 		
 		int upstair_y = 0;

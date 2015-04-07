@@ -63,6 +63,7 @@
 // Game Settings
 #define default_num_mon 10
 #define defs_filename "monster_desc.txt"
+#define objs_filename "object_desc.txt"
 
 // Control Settings
 #define num_pad_up '8'
