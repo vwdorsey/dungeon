@@ -67,8 +67,8 @@ using namespace std;
 				if (current == NULL)
 					exit(3);
 				else if (current->x >= 160 || current->y >= 96) {
-				   printf("%d,%d", current->x, current->y);
-				   printf("Bad path :( \n");
+				   std::cout << current->x << " , " << current->y;
+				   std::cout << ("Bad path \n");
 				   array_size = 0;
 				   return NULL;
 				}
@@ -77,7 +77,7 @@ using namespace std;
 			}
 		} 
     else {
-        printf("No path found!\n");
+        std::cout << ("No path found!\n");
         array_size = 0;
     } 
     
