@@ -43,10 +43,15 @@
 			mon->last_pc_pos[1] = 255;
 			mon->alive = 1;
 			
-			mon->attribs = (rand() % 4);
-			if(mon->attribs = 0) mon->Sprite = '0';
-			else if(mon->attribs = 1) mon->Sprite = '1';
-			else if(mon->attribs = 2) mon->Sprite = '2';
+			int intelligence = rand()%2;
+			int telepathic = rand()%2;
+			
+			if(intelligence) mon->attribs += IS_SMART;
+			if(telepathic) mon->attribs += TELEPATHIC;
+			
+			if(mon->attribs == 0) mon->Sprite = '0';
+			else if(mon->attribs == 1) mon->Sprite = '1';
+			else if(mon->attribs == 2) mon->Sprite = '2';
 			else mon->Sprite = '3';
 			
 			turn_queue.push(mon, mon->speed + pc_speed);
@@ -127,10 +132,15 @@
 			mon->last_pc_pos[1] = 255;
 			mon->alive = 255;
 			
-			mon->attribs = (rand() % 4);
-			if(mon->attribs = 0) mon->Sprite = '0';
-			else if(mon->attribs = 1) mon->Sprite = '1';
-			else if(mon->attribs = 2) mon->Sprite = '2';
+			int intelligence = rand()%2;
+			int telepathic = rand()%2;
+			
+			if(intelligence) mon->attribs += IS_SMART;
+			if(telepathic) mon->attribs += TELEPATHIC;
+			
+			if(mon->attribs == 0) mon->Sprite = '0';
+			else if(mon->attribs == 1) mon->Sprite = '1';
+			else if(mon->attribs == 2) mon->Sprite = '2';
 			else mon->Sprite = '3';
 			
 			turn_queue.push(mon, mon->speed + pc_speed);
@@ -174,7 +184,10 @@
 			}
 			return 1;
 		}
-		else return 0;
+		else {
+			turn_queue.push(mon, next_priority);
+			return 0;
+		}
 	}
 
 	void game::move_player(int d_y, int d_x){
@@ -199,7 +212,7 @@
 		dijkstra path_maker = dijkstra();
 		
 		mon_turns++;
-		
+		if(me->alive){
 		if(x == 2) x = -1;
 		if(y == 2) y = -1;
 		
@@ -214,7 +227,7 @@
 				check_monster_at_player(mon);
 			}
 			else if(current.layout[next_move.n_y][next_move.n_x].type == tile_type_floor){
-				move_monster(mon, next_move.n_y, next_move.n_x);
+				move_monster(mon, next_move.n_y-mon->pos[0], next_move.n_x-mon->pos[1]);
 			}
 		}
 		else if(mon -> attribs == IS_SMART){
@@ -227,10 +240,11 @@
 			move_monster(mon, y, x);
 		}
 	}
+}
 	
 	void game::move_monster(Monster *c, int d_y, int d_x){
 		if(current.layout[(c->pos[0])+d_y][(c->pos[1])+d_x].type == tile_type_floor){
-			if(current.layout[(c->pos[0])+d_y][(c->pos[1])+d_x].mon){
+			if(current.layout[(c->pos[0])+d_y][(c->pos[1])+d_x].mon && current.layout[(c->pos[0])+d_y][(c->pos[1])+d_x].mon != c){
 				Monster* killed_mon = current.layout[(c->pos[0])+d_y][(c->pos[1])+d_x].mon;
 				killed_mon -> alive = 0;
 			}

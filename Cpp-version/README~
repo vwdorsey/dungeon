@@ -50,8 +50,7 @@ Code locations:
 	values.hpp - Contains a new setting field for the file and a block of item types
 		- Setting field name is objs_filename, as mentioned above.
 		- The item type block makes it a lot easier to set a bitfield for the item types
-			- It should contain a bit for all the different item types that are possible
-			- Also has room for expansion if need be. Still needs populated though.
+			- It should contain a bit for all the 
 	dungeon.cpp - Contains the code to call the parser, along with some error prompts.
 		- If you really want to see this, look at lines 67-78.
 		

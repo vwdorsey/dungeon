@@ -35,6 +35,7 @@ typedef struct cell{
 	unsigned char is_room; //Stores if tile is part of room or not.
 	unsigned char is_corridor; //Stores if part of a hallway
 	unsigned char hardness; //Stores hardness.
+	unsigned char stairs; //Stores if tile is a staircase or not.
 } cell;
 
 /*
@@ -93,12 +94,14 @@ void write_save_file(t_tile *map, roominfo *rooms){
 				map_info[j+(i*160)].is_room = 0;
 				map_info[j+(i*160)].is_corridor = 0;
 				map_info[j+(i*160)].hardness = 255;
+				map_info[j+(i*160)].stairs = 0;
 			}
 			else if(get_type(map+((j)+((i)*160))) == 1){ // Rock
 				map_info[j+(i*160)].is_open = 0;
 				map_info[j+(i*160)].is_room = 0;
 				map_info[j+(i*160)].is_corridor = 0;
 				map_info[j+(i*160)].hardness = ((map+((j)+((i)*160)))->hardness) * 28;
+				map_info[j+(i*160)].stairs = 0;
 			}
 			else if(get_type(map+((j)+((i)*160))) == 2){ // Wall
 				map_info[j+(i*160)].is_open = 0;
@@ -111,6 +114,7 @@ void write_save_file(t_tile *map, roominfo *rooms){
 					map_info[j+(i*160)].is_corridor = 255;
 				}
 				map_info[j+(i*160)].hardness = ((map+((j)+((i)*160)))->hardness) * 28;
+				map_info[j+(i*160)].stairs = 0;
 			}
 			else{	// Path
 				map_info[j+(i*160)].is_open = 1;
@@ -123,7 +127,22 @@ void write_save_file(t_tile *map, roominfo *rooms){
 					map_info[j+(i*160)].is_corridor = 255;
 				}
 				map_info[j+(i*160)].hardness = 0;
+				map_info[j+(i*160)].stairs = 0;
 			}
+			if((map+((j)+((i)*160))).type == tile_type_upstair;){
+					map_info[j+(i*160)].is_open = 0;
+					map_info[j+(i*160)].is_room = 0;
+					map_info[j+(i*160)].is_corridor = 0;
+					map_info[j+(i*160)].hardness = 0;
+					map_info[j+(i*160)].stairs = 1;
+				}
+			if((map+((j)+((i)*160))).type == tile_type_downstair;){
+					map_info[j+(i*160)].is_open = 0;
+					map_info[j+(i*160)].is_room = 0;
+					map_info[j+(i*160)].is_corridor = 0;
+					map_info[j+(i*160)].hardness = 0;
+					map_info[j+(i*160)].stairs = 2;
+				}
 		}
 	}
 	

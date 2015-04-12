@@ -13,6 +13,8 @@ class parser{
 		void kill_obj_defs(std::vector<obj_template*> defs);
 	private:
 		dice* create_dice(std::string in_string, int init_offset);
+		int check_monster(mon_template* mon);
+		int check_object(obj_template* obj);
 };
 
 #endif

@@ -36,6 +36,8 @@ int main(int argc, char **argv)
 	}
 	
 	disp.end_session(); 
+	
+	/*
 	std::cout << current_game->turn;
 	std::cout << '\n';
 	std::cout << current_game->mon_turns;
@@ -46,6 +48,8 @@ int main(int argc, char **argv)
 	std::cout << '\n';
 	std::cout << current_game->turn_queue.get_size();
 	std::cout << '\n';
+	*/
+	
 	delete current_game;
 	return 0;
 	}

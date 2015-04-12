@@ -5,7 +5,7 @@ Monday, 4/6
 	- Started the assignment by creating necessary structs, attributes, and function headers for 1.08
 		- Created the struct obj_template
 			- It contains all the information fields for 1.08
-			- It should match the specification to the letter
+			- It should match the specification
 
 	- Worked on checking the 1.07 code, which it's based on, for memory leaks
 		- Turns out that there was a memory leak related to the new objects

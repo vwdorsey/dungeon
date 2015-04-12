@@ -210,8 +210,7 @@ std::vector<obj_template*> parser::parse_objs_file(){
 					if(type.find("WEAPON")!=std::string::npos){
 						if(type.find("OFFHAND")!=std::string::npos) obj->Type += WEAPON + OFFHAND + IS_EQUIPMENT;
 						else obj->Type += WEAPON + IS_EQUIPMENT;
-					}
-					if(type.find("OFFHAND")!=std::string::npos && (!(type.find("WEAPON")!=std::string::npos))) obj->Type += OFFHAND + IS_EQUIPMENT;
+					if(type.find("OFFHAND")!=std::string::npos && (!(type.find("WEAPON")!=std::string::npos)) obj->Type += OFFHAND + IS_EQUIPMENT;
 					if(type.find("RANGED")!=std::string::npos) obj->Type += RANGED + IS_EQUIPMENT;
 					if(type.find("ARMOR")!=std::string::npos) obj->Type += ARMOR + IS_EQUIPMENT;
 					if(type.find("HELMET")!=std::string::npos) obj->Type += HELMET + IS_EQUIPMENT;
@@ -288,28 +287,28 @@ void parser::output_obj_defs(std::vector<obj_template*> def_store){
 		for(int k = 0; k < def_store[i]->Description.size(); k++){
 			std::cout << def_store[i]->Description[k] << '\n';
 		}
-		std::cout << "TYPE: ";
+		std::cout << "TYPE:";
 
-		if(def_store[i]->Type == WEAPON + IS_EQUIPMENT) std::cout << "WEAPON" << '\n';
-		if(def_store[i]->Type == OFFHAND + IS_EQUIPMENT) std::cout << "OFFHAND" << '\n';
-		if(def_store[i]->Type == WEAPON + OFFHAND + IS_EQUIPMENT) std::cout << "WEAPON OFFHAND" << '\n';
-		if(def_store[i]->Type == RANGED + IS_EQUIPMENT) std::cout << "RANGED" << '\n';
-		if(def_store[i]->Type == ARMOR + IS_EQUIPMENT) std::cout << "ARMOR" << '\n';
-		if(def_store[i]->Type == HELMET + IS_EQUIPMENT) std::cout << "HELMET" << '\n';
-		if(def_store[i]->Type == CLOAK + IS_EQUIPMENT) std::cout << "CLOAK" << '\n';
-		if(def_store[i]->Type == GLOVES + IS_EQUIPMENT) std::cout << "GLOVES" << '\n';
-		if(def_store[i]->Type == BOOTS + IS_EQUIPMENT) std::cout << "BOOTS" << '\n';
-		if(def_store[i]->Type == RING + IS_EQUIPMENT) std::cout << "RING" << '\n';
-		if(def_store[i]->Type == AMULET + IS_EQUIPMENT) std::cout << "AMULET" << '\n';
-		if(def_store[i]->Type == LIGHT + IS_EQUIPMENT) std::cout << "LIGHT" << '\n';
-		if(def_store[i]->Type == SCROLL) std::cout << "SCROLL" << '\n';
-		if(def_store[i]->Type == BOOK) std::cout << "BOOK" << '\n';
-		if(def_store[i]->Type == FLASK) std::cout << "FLASK" << '\n';
-		if(def_store[i]->Type == GOLD) std::cout << "GOLD" << '\n';
-		if(def_store[i]->Type == AMMUNITION) std::cout << "AMMUNITION" << '\n';
-		if(def_store[i]->Type == FOOD) std::cout << "FOOD" << '\n';
-		if(def_store[i]->Type == WAND) std::cout << "WAND" << '\n';
-		if(def_store[i]->Type == CONTAINER) std::cout << "CONTAINER" << '\n';
+		if(obj->Type == WEAPON + IS_EQUIPMENT) std::cout << "WEAPON" << '\n';
+		if(obj->Type += OFFHAND + IS_EQUIPMENT) std::cout << "OFFHAND" << '\n';
+		if(obj->Type += WEAPON + OFFHAND + IS_EQUIPMENT) std::cout << "WEAPON OFFHAND" << '\n';
+		if(obj->Type += RANGED + IS_EQUIPMENT) std::cout << "RANGED" << '\n';
+		if(obj->Type += ARMOR + IS_EQUIPMENT) std::cout << "ARMOR" << '\n';
+		if(obj->Type += HELMET + IS_EQUIPMENT) std::cout << "HELMET" << '\n';
+		if(tobj->Type += CLOAK + IS_EQUIPMENT) std::cout << "CLOAK" << '\n';
+		if(obj->Type += GLOVES + IS_EQUIPMENT) std::cout << "GLOVES" << '\n';
+		if(obj->Type += BOOTS + IS_EQUIPMENT) std::cout << "BOOTS" << '\n';
+		if(obj->Type += RING + IS_EQUIPMENT) std::cout << "RING" << '\n';
+		if(obj->Type += AMULET + IS_EQUIPMENT) std::cout << "AMULET" << '\n';
+		if(obj->Type += LIGHT + IS_EQUIPMENT) std::cout << "LIGHT" << '\n';
+		if(obj->Type += SCROLL) std::cout << "SCROLL" << '\n';
+		if(obj->Type += BOOK) std::cout << "BOOK" << '\n';
+		if(obj->Type += FLASK) std::cout << "FLASK" << '\n';
+		if(obj->Type += GOLD) std::cout << "GOLD" << '\n';
+		if(obj->Type += AMMUNITION) std::cout << "AMMUNITION" << '\n';
+		if(obj->Type += FOOD) std::cout << "FOOD" << '\n';
+		if(obj->Type += WAND) std::cout << "WAND" << '\n';
+		if(obj->Type += CONTAINER) std::cout << "CONTAINER" << '\n';
 
 		std::cout << "COLOR: " << def_store[i]->Color << '\n';
 		std::cout << "HIT: " << def_store[i]->Hit->base << '+' << def_store[i]->Hit->num_dice << 'd' << def_store[i]->Hit->sides << '\n';

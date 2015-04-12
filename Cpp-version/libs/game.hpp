@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "dijkstra.hpp"
+#include <iostream>
 
 class game{
 	public:
