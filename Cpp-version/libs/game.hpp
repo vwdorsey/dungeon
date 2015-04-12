@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <cstdint>
+#include <cstdio>
 #include "dijkstra.hpp"
 
 class game{

@@ -1,26 +1,17 @@
-dungeon: dungeon.o map.o pqueue.o dijkstra.o display.o game.o parser.o
-	g++ dungeon.o map.o pqueue.o dijkstra.o display.o game.o parser.o -std=c++11 -lncurses -g -o dungeon
-	
-dungeon.o: dungeon.cpp
-	g++ dungeon.cpp -std=c++11 -g -c
-	
-map.o: libs/map.cpp
-	g++ libs/map.cpp -std=c++11 -g -c
+CC=g++
+CFLAGS= -std=c++11 -g -c -lncurses
+LDFLAGS= -std=c++11 -g -lncurses
+SOURCES=dungeon.cpp libs/map.cpp libs/pqueue.cpp libs/dijkstra.cpp libs/display.cpp libs/game.cpp libs/parser.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=dungeon.exe
 
-pqueue.o: libs/pqueue.cpp
-	g++ libs/pqueue.cpp -std=c++11 -g -c
+all: $(SOURCES) $(EXECUTABLE)
+    
+$(EXECUTABLE): $(OBJECTS) 
+	$(CC) -o $@ $(OBJECTS) $(LDFLAGS)
 
-dijkstra.o: libs/dijkstra.cpp
-	g++ libs/dijkstra.cpp -std=c++11 -g -c
-	
-display.o: libs/display.cpp
-	g++ libs/display.cpp -std=c++11 -lncurses -g -c
-	
-game.o: libs/game.cpp
-	g++ libs/game.cpp -std=c++11 -g -c 
-	
-parser.o: libs/parser.cpp
-	g++ libs/parser.cpp -std=c++11 -g -c 
-	
+.cpp.o:
+	$(CC) $(CFLAGS) $< $@
+    
 clean:
-	rm -f *.o dungeon fc
+	rm -f $(OBJECTS) $(EXECUTABLE) fc
