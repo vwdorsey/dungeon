@@ -67,13 +67,14 @@ using namespace std;
 				if (current == NULL)
 					exit(3);
 				else if (current->x >= 160 || current->y >= 96) {
-				   std::cout << current->x << " , " << current->y;
+				   //std::cout << current->x << " , " << current->y;
 				   std::cout << ("Bad path \n");
 				   array_size = 0;
 				   return NULL;
 				}
 				array_size++;
 				current = current->previous;
+
 			}
 		} 
     else {
@@ -87,7 +88,7 @@ using namespace std;
         
         dij_node *current = nodes[dest_y][dest_x];
         
-        for(int i = 0; i < array_size; i++){
+        for(int i = array_size; i > 0 ; i--){
           path_array[i].n_x = current -> x;
           path_array[i].n_y = current -> y;
           path_array[i].path_size = array_size;

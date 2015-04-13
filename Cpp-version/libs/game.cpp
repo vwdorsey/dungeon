@@ -85,7 +85,6 @@
 	
 	game::~game(){
 		delete me;
-		//delete &current;
 	}
 
 	void game::save_game(){

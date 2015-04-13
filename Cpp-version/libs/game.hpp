@@ -5,6 +5,7 @@
 #include <cstdio>
 #include "dijkstra.hpp"
 #include <iostream>
+#include <random>
 
 class game{
 	public:
@@ -56,7 +57,7 @@ class game{
 			//Room Data is in Map already.
 			uint8_t pc_position[2]; //x,y format
 			uint32_t turn;
-			uint32_t sequence; //What the hell is this sequence number?
+			uint32_t sequence; //Sequence in turn queue.
 			uint16_t num_npcs;
 			//Due to num_npcs being dynamic, the npc list will have to be generated on save.
 		};
