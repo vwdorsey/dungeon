@@ -2,19 +2,20 @@
 #define PARSER_HPP
 
 #include "structs.hpp"
+#include "char_template.hpp"
+#include "obj_template.hpp"
 
 class parser{
 	public:
-		std::vector<mon_template*> parse_defs_file(); 
-		void output_mon_defs(std::vector<mon_template*> defs);
-		std::vector<obj_template*> parse_objs_file();
-		void output_obj_defs(std::vector<obj_template*> defs);
-		void kill_mon_defs(std::vector<mon_template*> defs);
-		void kill_obj_defs(std::vector<obj_template*> defs);
+		std::vector<Char_template*> parse_defs_file(); 
+		void output_mon_defs(std::vector<Char_template*> defs);
+		std::vector<Obj_template*> parse_objs_file();
+		void output_obj_defs(std::vector<Obj_template*> defs);
+		void kill_mon_defs(std::vector<Char_template*> defs);
+		void kill_obj_defs(std::vector<Obj_template*> defs);
 	private:
-		dice* create_dice(std::string in_string, int init_offset);
-		int check_monster(mon_template* mon);
-		int check_object(obj_template* obj);
+		int check_monster(Char_template* mon);
+		int check_object(Obj_template* obj);
 };
 
 #endif

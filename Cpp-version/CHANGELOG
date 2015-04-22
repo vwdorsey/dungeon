@@ -1,54 +1,56 @@
 Assignment 1.08 - Parsing Object Definitions
 
-Monday, 4/6
+Sunday, 4/12
 	
-	- Started the assignment by creating necessary structs, attributes, and function headers for 1.08
-		- Created the struct obj_template
-			- It contains all the information fields for 1.08
-			- It should match the specification to the letter
+	- Started this assignment by doing a lot of cleanup and code rearrangement on the project
+		- Makefile reimplemented to be far more generic and easier to manage.
+		- Several structs made into classes
+			- Includes object and character templates and the dice struct.
+				- Object Template = obj_template.cpp/.hpp
+				- Character Template = char_template.cpp/.hpp
+				- Dice = dice.cpp/.hpp
+			- Also involves a new Object and Character class
+				- Object = object.cpp/.hpp
+				- Character = character.cpp/.hpp
+			- This allowed me to move code around and make small, but useful functions for specific things.
+			- Also cut down on the risk of circular includes.
 
-	- Worked on checking the 1.07 code, which it's based on, for memory leaks
-		- Turns out that there was a memory leak related to the new objects
-			-Basically, the program would create objects, but was unable to delete them
-			-Spent around 2-3 hours working on this.
-		- This issue has been fixed for the 1.07 code
-			- Problem was that I created objects vs pointers to objects
-			- Pointers are easy to delete/free, objects arent
-			- Trying to delete said objects would cause Seg. Faults
-			- Fixed by changing all objects to pointers to new objects
-			- This fixed all the leaks.
-	- Copied 1.07 code and modified it to work for objects.
-		- Changed all references of mon_template to obj_template
-		- Changed the monster attribute code to the object type
-			- Also created a block of attributes in values.hpp for all the item types to make for easier config
-			- This is discussed better in the readme.
-		- Reordered all variables to match the specification
-		- Reordered output_obj_defs to try and match the order of the list in the specification
-			- Had to add tags to the values, otherwise they don't make any sense
-			- It makes it look like they were printed from the file, but they are actually stored
-				- Please check the code if you have doubts.
+Monday, 4/13
 
-Tuesday, 4/7
+	- Spent most of today moving code into new classes/new locations
+		- Created the Dice, Object, Obj_template, Character, and Char_template classes.
+			- All of these have the same structure as the structs they're derived from
+			- Only real differences are 
+			 	- it's easy to call them 
+			 	- I added utility functions to said classes to make them more useful.
 
-	- Fixed more memory leak problems
-		- There were some issues related to the 1.07 code that got passed on to the new 1.08 code
-			- Applying the fixes in 1.07 to 1.08 fixed everything.
-	- Changed argument parameters for this project only
-		- Pre 1.07 code will run given one argument to the program
-		- 1.07 code will run given two arguments to the program
-		- 1.08 code executes when no arguments are given to the program
-	- Implemented more field error checking 
-		- Program will now check to make sure that all fields are filled correctly
-			- This is basically done by checking if the field is null/empty
-			- If they aren't, the object is tossed
-		- Program will also reject data if proper headers aren't detected.
-			- If the RLG229 OBJECT DECRIPTION <version> line isn't read, the whole file is ignored.
-			- If the BEGIN OBJECT is missing, it will ignore input until the tag is found.
-			- If a BEGIN OBJECT comes and no END was found, the object being constructed is tossed.
-			- Else the program runs as normal.
-		- Methods were tested some and seem to work normally.
-			- Did have some issues at first due to bad code placement
-			- Also discovered that my defs file had issues after running, but they were just typos.
+Tuesday, 4/14
 
-4/7, 11:45pm
-	- Finished Changelog and Readme, Project ended
+	- Continued and finished rewriting classes
+		- Took care of the new Game constructor to make all the new characters and objects
+		- Also added the color palattes to the display class and actually tested them
+			- Made the old renderer look very interesting, but in a good way.
+
+	- Implemented the new display function, redraw_with_template, to handle the color and sprites
+		- Required a deviation from the original format 
+			-Replacd the active screen char array with one made of containers
+				- Container is draw_container and has 2 elements, a char for Sprite and a short for Color
+
+Wednesday, 4/15 - Past Deadline
+	
+	- Worked on ironing out all the bugs that had been cropping up
+		- Several prevalent ones were
+			- Memory leaks, as usual
+				- Fixed by examining code and Valgrind output
+				- Main cause was simply forgetting to deallocate
+				- There's about 230k-240k memory that isn't being dealloced by ncurses though
+			- Changing something in one place and forgetting to do it elsewhere
+				- This would really be due to being tired and trying to think about what I'm doing
+				- The only way to fix this is to just track everything down and make changes
+			- Object characters wouldn't display right
+				- Most would be the same or the '*'/not valid character.
+				- Type values would also be off the charts and not be useful
+				- One Fix: Appearantly, code got deleted that set the sprite
+					- This caused a method to determine the sprite to return a char/memory address to an unsigned int.
+				- The other fix: Tried to set sprite = to character when I needed to return the character
+					- Not sure what it was returning then. Memory Address perhaps

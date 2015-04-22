@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <cstring>
 
-std::vector<mon_template*> parser::parse_defs_file(){
+std::vector<Char_template*> parser::parse_defs_file(){
 	char* home; 
 	char* path;
 	char* defspath;
@@ -26,7 +26,7 @@ std::vector<mon_template*> parser::parse_defs_file(){
 	
 	std::string in_string; 
 	std::vector<std::string> in_store;
-	std::vector<mon_template*> def_store;
+	std::vector<Char_template*> def_store;
 	
 	std::ifstream deffile(defspath);
 	free(path);
@@ -40,9 +40,9 @@ std::vector<mon_template*> parser::parse_defs_file(){
 		return def_store;
 	}
 	
-	mon_template* mon;
+	Char_template* mon;
 	int valid_file_header = 0;
-	int on_valid_monster_def = 0;
+	int on_valid_character_def = 0;
 	int in_description = 0;
 	
 	for(int i = 0; i < (int)in_store.size(); i++){
@@ -51,8 +51,8 @@ std::vector<mon_template*> parser::parse_defs_file(){
 			valid_file_header = 1;
 		}
 		else if(in_string.find("BEGIN MONSTER")!=std::string::npos){
-			mon = new mon_template();
-			on_valid_monster_def = 1;
+			mon = new Char_template();
+			on_valid_character_def = 1;
 		}
 		else if(in_string.find("NAME")!=std::string::npos){
 			mon->Name = in_string.substr(5);
@@ -61,7 +61,14 @@ std::vector<mon_template*> parser::parse_defs_file(){
 			mon->Sprite = in_string[in_string.find(' ')+1];
 		}
 		else if(in_string.find("COLOR")!=std::string::npos){
-			mon->Color = in_string.substr(6);
+			std::string color = in_string.substr(6);
+			if(color == "BLACK") mon->Color = BLACK;
+			if(color == "RED") mon->Color = RED;
+			if(color == "GREEN") mon->Color = GREEN;
+			if(color == "YELLOW") mon->Color = YELLOW;
+			if(color == "BLUE") mon->Color = BLUE;
+			if(color == "CYAN") mon->Color = CYAN;
+			if(color == "MAGENTA") mon->Color = MAGENTA;
 		}
 		else if(in_string.find("DESC")!=std::string::npos){
 			in_description = 1;
@@ -75,20 +82,23 @@ std::vector<mon_template*> parser::parse_defs_file(){
 			}
 		}
 		else if(in_string.find("SPEED")!=std::string::npos){
-			mon->Speed = create_dice(in_string, 6);
+			mon->Speed = new Dice(in_string, 6);
 		}
 		else if(in_string.find("DAM")!=std::string::npos){
-			mon->Damage = create_dice(in_string, 4);
+			mon->Damage = new Dice(in_string, 4);
 		}
 		else if(in_string.find("HP")!=std::string::npos){
-			mon->HP = create_dice(in_string, 3);
+			mon->HP = new Dice(in_string, 3);
 		}
 		else if(in_string.find("ABIL")!=std::string::npos){
 			std::string abils = in_string.substr(5);
-			if(abils.find("PASS")!=std::string::npos) mon->Attribs += PASS;
+			if(abils.find("PASS")!=std::string::npos){
+				mon->Attribs += PASS;
+			} 
 			if(abils.find("TUNNEL")!=std::string::npos) mon->Attribs += TUNNEL;
 			if(abils.find("SMART")!=std::string::npos) mon->Attribs += IS_SMART;
 			if(abils.find("TELE")!=std::string::npos) mon->Attribs += TELEPATHIC;
+			if(abils.find("CHARACTER")!=std::string::npos) mon->Attribs += IS_CHARACTER;
 		}
 		else if(in_string.find("END")!=std::string::npos){
 			def_store.push_back(mon);
@@ -98,43 +108,13 @@ std::vector<mon_template*> parser::parse_defs_file(){
 	return def_store;
 }
 
-void parser::output_mon_defs(std::vector<mon_template*> def_store){
+void parser::output_mon_defs(std::vector<Char_template*> def_store){
 	for(int i = 0; i < def_store.size(); i++){
-		std::cout << "Name: " << def_store[i]->Name << '\n';
-		std::cout << "Sprite: " << def_store[i]->Sprite << '\n';
-		std::cout << "Color: " << def_store[i]->Color << '\n';
-		std::cout << "Description: \n";
-		for(int k = 0; k < def_store[i]->Description.size(); k++){
-			std::cout << def_store[i]->Description[k] << '\n';
-		}
-		std::cout << "Attributes: ";
-		uint16_t att = def_store[i]->Attribs;
-		if(att >= 8){
-			att -=  8;
-			std::cout << "PASS ";
-		}
-		if(att >= 4){
-			att -=  4;
-			std::cout << "TUNNEL ";  
-		}
-		if(att >= 2){
-			att -=  2;
-			std::cout << "TELE ";
-		}
-		if(att == 1){
-			att -=  1;
-			std::cout << "SMART";  
-		}
-		std::cout << '\n';
-		std::cout << "Dice Values:";
-		std::cout << "Speed: " << def_store[i]->Speed->base << '+' << def_store[i]->Speed->num_dice << 'd' << def_store[i]->Speed->sides << '\n';
-		std::cout << "Damage: " << def_store[i]->Damage->base << '+' << def_store[i]->Damage->num_dice << 'd' << def_store[i]->Damage->sides << '\n';
-		std::cout << "HP: " << def_store[i]->HP->base << '+' << def_store[i]->HP->num_dice << 'd' << def_store[i]->HP->sides << '\n';
-		std::cout << '\n';
+		def_store[i]->printout();
 	}
 }
 
-std::vector<obj_template*> parser::parse_objs_file(){
+std::vector<Obj_template*> parser::parse_objs_file(){
 	char* home;
 	char* path;
 	char* defspath;
@@ -155,7 +135,7 @@ std::vector<obj_template*> parser::parse_objs_file(){
 	free(path);
 	std::string in_string; 
 	std::vector<std::string> in_store;
-	std::vector<obj_template*> def_store;
+	std::vector<Obj_template*> def_store;
 	
 	std::ifstream deffile(defspath);
 	if(deffile.is_open()){
@@ -168,7 +148,7 @@ std::vector<obj_template*> parser::parse_objs_file(){
 		return def_store;
 	}
 	
-	obj_template* obj;
+	Obj_template* obj;
 	int valid_file_header = 0;
 	int on_valid_object_def = 0;
 	int in_description = 0;
@@ -184,7 +164,7 @@ std::vector<obj_template*> parser::parse_objs_file(){
 					on_valid_object_def = 0;
 					delete obj;
 				}
-				obj = new obj_template();
+				obj = new Obj_template();
 				on_valid_object_def = 1;
 			}
 			if(on_valid_object_def){
@@ -208,19 +188,19 @@ std::vector<obj_template*> parser::parse_objs_file(){
 				else if(in_string.find("TYPE")!=std::string::npos){
 					std::string type = in_string.substr(5);
 					if(type.find("WEAPON")!=std::string::npos){
-						if(type.find("OFFHAND")!=std::string::npos) obj->Type += WEAPON + OFFHAND + IS_EQUIPMENT;
-						else obj->Type += WEAPON + IS_EQUIPMENT;
+						if(type.find("OFFHAND")!=std::string::npos) obj->Type += WEAPON + OFFHAND;
+						else obj->Type += WEAPON;
 					}
-					if(type.find("OFFHAND")!=std::string::npos && (!(type.find("WEAPON")!=std::string::npos))) obj->Type += OFFHAND + IS_EQUIPMENT;
-					if(type.find("RANGED")!=std::string::npos) obj->Type += RANGED + IS_EQUIPMENT;
-					if(type.find("ARMOR")!=std::string::npos) obj->Type += ARMOR + IS_EQUIPMENT;
-					if(type.find("HELMET")!=std::string::npos) obj->Type += HELMET + IS_EQUIPMENT;
-					if(type.find("CLOAK")!=std::string::npos) obj->Type += CLOAK + IS_EQUIPMENT;
-					if(type.find("GLOVES")!=std::string::npos) obj->Type += GLOVES + IS_EQUIPMENT;
-					if(type.find("BOOTS")!=std::string::npos) obj->Type += BOOTS + IS_EQUIPMENT;
-					if(type.find("RING")!=std::string::npos) obj->Type += RING + IS_EQUIPMENT;
-					if(type.find("AMULET")!=std::string::npos) obj->Type += AMULET + IS_EQUIPMENT;
-					if(type.find("LIGHT")!=std::string::npos) obj->Type += LIGHT + IS_EQUIPMENT;
+					if(type.find("OFFHAND")!=std::string::npos && (!(type.find("WEAPON")!=std::string::npos))) obj->Type += OFFHAND;
+					if(type.find("RANGED")!=std::string::npos) obj->Type += RANGED;
+					if(type.find("ARMOR")!=std::string::npos) obj->Type += ARMOR;
+					if(type.find("HELMET")!=std::string::npos) obj->Type += HELMET;
+					if(type.find("CLOAK")!=std::string::npos) obj->Type += CLOAK;
+					if(type.find("GLOVES")!=std::string::npos) obj->Type += GLOVES;
+					if(type.find("BOOTS")!=std::string::npos) obj->Type += BOOTS;
+					if(type.find("RING")!=std::string::npos) obj->Type += RING;
+					if(type.find("AMULET")!=std::string::npos) obj->Type += AMULET;
+					if(type.find("LIGHT")!=std::string::npos) obj->Type += LIGHT;
 					if(type.find("SCROLL")!=std::string::npos) obj->Type += SCROLL;
 					if(type.find("BOOK")!=std::string::npos) obj->Type += BOOK;
 					if(type.find("FLASK")!=std::string::npos) obj->Type += FLASK;
@@ -232,36 +212,43 @@ std::vector<obj_template*> parser::parse_objs_file(){
 				}
 				//Finds Color
 				else if(in_string.find("COLOR")!=std::string::npos){
-					obj->Color = in_string.substr(6);
+					std::string color = in_string.substr(6);
+					if(color == "BLACK") obj->Color = BLACK;
+					if(color == "RED") obj->Color = RED;
+					if(color == "GREEN") obj->Color = GREEN;
+					if(color == "YELLOW") obj->Color = YELLOW;
+					if(color == "BLUE") obj->Color = BLUE;
+					if(color == "CYAN") obj->Color = CYAN;
+					if(color == "MAGENTA") obj->Color = MAGENTA;
 				}
 				//Dice Values
 				else if(in_string.find("HIT")!=std::string::npos){
-					obj->Hit = create_dice(in_string, 4);
+					obj->Hit = new Dice(in_string, 4);
 				}
 				else if(in_string.find("DAM")!=std::string::npos){
-					obj->Damage = create_dice(in_string, 4);
+					obj->Damage = new Dice(in_string, 4);
 				}
 				else if(in_string.find("DODGE")!=std::string::npos){
-					obj->Dodge = create_dice(in_string, 6);
+					obj->Dodge = new Dice(in_string, 6);
 				}
 				else if(in_string.find("DEF")!=std::string::npos){
-					obj->Defense = create_dice(in_string, 4);
+					obj->Defense = new Dice(in_string, 4);
 				}
 				else if(in_string.find("WEIGHT")!=std::string::npos){
-					obj->Weight = create_dice(in_string, 7);
+					obj->Weight = new Dice(in_string, 7);
 				}
 				else if(in_string.find("SPEED")!=std::string::npos){
-					obj->Speed = create_dice(in_string, 6);
+					obj->Speed = new Dice(in_string, 6);
 				}
 				else if(in_string.find("ATTR")!=std::string::npos){
-					obj->SpecAttr = create_dice(in_string, 5);
+					obj->SpecAttr = new Dice(in_string, 5);
 				}
 				else if(in_string.find("VAL")!=std::string::npos){
-					obj->Value = create_dice(in_string, 4);
+					obj->Value = new Dice(in_string, 4);
 				}
 				//Ending Tag
 				else if(in_string.find("END")!=std::string::npos){
-					if(check_object(obj)){
+					if(obj->do_sanity_check()){
 						def_store.push_back(obj);
 						on_valid_object_def = 0;
 					}
@@ -281,104 +268,24 @@ std::vector<obj_template*> parser::parse_objs_file(){
 	return def_store;
 }
 
-void parser::output_obj_defs(std::vector<obj_template*> def_store){
+void parser::output_obj_defs(std::vector<Obj_template*> def_store){
 	for(int i = 0; i < def_store.size(); i++){
-		std::cout << "NAME: " << def_store[i]->Name << '\n';
-		std::cout << "DESC: " << '\n';
-		for(int k = 0; k < def_store[i]->Description.size(); k++){
-			std::cout << def_store[i]->Description[k] << '\n';
-		}
-		std::cout << "TYPE: ";
-
-		if(def_store[i]->Type == WEAPON + IS_EQUIPMENT) std::cout << "WEAPON" << '\n';
-		if(def_store[i]->Type == OFFHAND + IS_EQUIPMENT) std::cout << "OFFHAND" << '\n';
-		if(def_store[i]->Type == WEAPON + OFFHAND + IS_EQUIPMENT) std::cout << "WEAPON OFFHAND" << '\n';
-		if(def_store[i]->Type == RANGED + IS_EQUIPMENT) std::cout << "RANGED" << '\n';
-		if(def_store[i]->Type == ARMOR + IS_EQUIPMENT) std::cout << "ARMOR" << '\n';
-		if(def_store[i]->Type == HELMET + IS_EQUIPMENT) std::cout << "HELMET" << '\n';
-		if(def_store[i]->Type == CLOAK + IS_EQUIPMENT) std::cout << "CLOAK" << '\n';
-		if(def_store[i]->Type == GLOVES + IS_EQUIPMENT) std::cout << "GLOVES" << '\n';
-		if(def_store[i]->Type == BOOTS + IS_EQUIPMENT) std::cout << "BOOTS" << '\n';
-		if(def_store[i]->Type == RING + IS_EQUIPMENT) std::cout << "RING" << '\n';
-		if(def_store[i]->Type == AMULET + IS_EQUIPMENT) std::cout << "AMULET" << '\n';
-		if(def_store[i]->Type == LIGHT + IS_EQUIPMENT) std::cout << "LIGHT" << '\n';
-		if(def_store[i]->Type == SCROLL) std::cout << "SCROLL" << '\n';
-		if(def_store[i]->Type == BOOK) std::cout << "BOOK" << '\n';
-		if(def_store[i]->Type == FLASK) std::cout << "FLASK" << '\n';
-		if(def_store[i]->Type == GOLD) std::cout << "GOLD" << '\n';
-		if(def_store[i]->Type == AMMUNITION) std::cout << "AMMUNITION" << '\n';
-		if(def_store[i]->Type == FOOD) std::cout << "FOOD" << '\n';
-		if(def_store[i]->Type == WAND) std::cout << "WAND" << '\n';
-		if(def_store[i]->Type == CONTAINER) std::cout << "CONTAINER" << '\n';
-
-		std::cout << "COLOR: " << def_store[i]->Color << '\n';
-		std::cout << "HIT: " << def_store[i]->Hit->base << '+' << def_store[i]->Hit->num_dice << 'd' << def_store[i]->Hit->sides << '\n';
-		std::cout << "DAM: " << def_store[i]->Damage->base << '+' << def_store[i]->Damage->num_dice << 'd' << def_store[i]->Damage->sides << '\n';
-		std::cout << "DODGE: " << def_store[i]->Dodge->base << '+' << def_store[i]->Dodge->num_dice << 'd' << def_store[i]->Dodge->sides << '\n';
-		std::cout << "DEF: " << def_store[i]->Defense->base << '+' << def_store[i]->Defense->num_dice << 'd' << def_store[i]->Defense->sides << '\n';
-		std::cout << "WEIGHT: " << def_store[i]->Weight->base << '+' << def_store[i]->Weight->num_dice << 'd' << def_store[i]->Weight->sides << '\n';
-		std::cout << "SPEED: " << def_store[i]->Speed->base << '+' << def_store[i]->Speed->num_dice << 'd' << def_store[i]->Speed->sides << '\n';
-		std::cout << "ATTR: " << def_store[i]->SpecAttr->base << '+' << def_store[i]->SpecAttr->num_dice << 'd' << def_store[i]->SpecAttr->sides << '\n';
-		std::cout << "VAL: " << def_store[i]->Value->base << '+' << def_store[i]->Value->num_dice << 'd' << def_store[i]->Value->sides << '\n';
-		std::cout << '\n';
+		def_store[i]->printout();
 	}
 }
 
-dice* parser::create_dice(std::string in_string, int init_offset){
-	dice* Dice = new dice();
-	std::string base_s = in_string.substr(init_offset, in_string.find_first_of('+')-3);
-	std::string num_s = in_string.substr(in_string.find("+")+1, in_string.find("d")- in_string.find("+")-1);
-	std::string sides_s = in_string.substr(in_string.find("d")+1);
-	
-	Dice->base = atoi(base_s.c_str());
-	Dice->num_dice = atoi(num_s.c_str());
-	Dice->sides = atoi(sides_s.c_str());
-	return Dice;
-}
-
-void parser::kill_mon_defs(std::vector<mon_template*> defs){
+void parser::kill_mon_defs(std::vector<Char_template*> defs){
 	while(defs.size() > 0){
-		mon_template* mon = defs.back();
-		delete(mon->Speed);
-		delete(mon->HP);
-		delete(mon->Damage);
+		Char_template* mon = defs.back();
 		delete(mon);
 		defs.pop_back();
 	}
 }
 
-void parser::kill_obj_defs(std::vector<obj_template*> defs){
+void parser::kill_obj_defs(std::vector<Obj_template*> defs){
 	while(defs.size() > 0){
-		obj_template* obj = defs.back();
-		delete(obj->Hit);
-		delete(obj->Damage);
-		delete(obj->Dodge);
-		delete(obj->Defense);
-		delete(obj->Weight);
-		delete(obj->Speed);
-		delete(obj->SpecAttr);
-		delete(obj->Value);
+		Obj_template* obj = defs.back();
 		delete(obj);
 		defs.pop_back();
 	}
-}
-
-int parser::check_monster(mon_template* mon){
-	return 1;
-}
-
-int parser::check_object(obj_template* obj){
-	//if(obj->Name == "") return 0;
-	if(obj->Description.size() == 0) return 0;
-	else if(obj->Type == 0) return 0;
-	//else if(obj->Color == "") return 0;
-	else if(obj->Hit == NULL) return 0;
-	else if(obj->Damage == NULL) return 0;
-	else if(obj->Dodge == NULL) return 0;
-	else if(obj->Defense == NULL) return 0;
-	else if(obj->Weight == NULL) return 0;
-	else if(obj->Speed == NULL) return 0;
-	else if(obj->SpecAttr == NULL) return 0;
-	else if(obj->Value == NULL) return 0;
-	else return 1;
 }

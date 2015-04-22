@@ -5,16 +5,19 @@
 #include <cstdio>
 #include "dijkstra.hpp"
 #include <iostream>
-#include <random>
+#include "obj_template.hpp"
+#include "char_template.hpp"
 
 class game{
 	public:
 		game(int npcs);
+		game(int npcs, int objs);
 		~game();
 	
 		map current;
 		Player* me;
 		Monster* mon_list;
+		std::vector<Object*> obj_vect;
 		pqueue turn_queue;
 		int num_npcs;
 		int turn;
@@ -57,7 +60,7 @@ class game{
 			//Room Data is in Map already.
 			uint8_t pc_position[2]; //x,y format
 			uint32_t turn;
-			uint32_t sequence; //Sequence in turn queue.
+			uint32_t sequence; //What the hell is this sequence number?
 			uint16_t num_npcs;
 			//Due to num_npcs being dynamic, the npc list will have to be generated on save.
 		};
@@ -69,7 +72,9 @@ class game{
 		
 		std::uniform_int_distribution<int> rand_mon_move;
 		std::default_random_engine random;
-		
+		int objects;
+		int monsters;
+
 		int mode; //0 for Control, 1 for Look
 };
 

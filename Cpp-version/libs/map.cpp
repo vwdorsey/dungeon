@@ -25,7 +25,7 @@ map::map(){
 	}
 
 map::~map(){
-	//std::cout << "Goodbye\n";
+
 	}
 
 void map::init_map(){
@@ -39,18 +39,21 @@ void map::init_map(){
 				layout[y][x].hardness = 9;
                 layout[y][x].pc = NULL;
                 layout[y][x].mon = NULL;
+                layout[y][x].obj = NULL;
 			}
 			else if(x == 0 || x == rows-1){
 				layout[y][x].type = tile_type_immutable;
 				layout[y][x].hardness = 9;
                 layout[y][x].pc = NULL;
                 layout[y][x].mon = NULL;
+                layout[y][x].obj = NULL;
 			}
 			else{
 				layout[y][x].type = tile_type_empty;
 				layout[y][x].hardness = (rand() % 8) + 1;
                 layout[y][x].pc = NULL;
                 layout[y][x].mon = NULL;
+                layout[y][x].obj = NULL;
 			}
 		}
 	}

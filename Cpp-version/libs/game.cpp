@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "parser.hpp"
 
 	game::game(int npcs){
 		current = map();
@@ -22,10 +23,8 @@
 				current.layout[y][x].pc = me;
 			}
 		}
-		
-		num_npcs = npcs;
-		
-		for(int i = 0; i <= num_npcs; i++){
+
+		for(int i = 0; i <= npcs; i++){
 			Monster* mon = new Monster();
 			while(mon->pos[0] == 0 && mon->pos[1] == 0){
 				int x = (rand()%(rows-2)) + 1;
@@ -56,7 +55,6 @@
 			
 			turn_queue.push(mon, mon->speed + pc_speed);
 		}
-		
 		int upstair_y = 0;
 		int upstair_x = 0;
 		int downstair_y = 0;
@@ -82,9 +80,120 @@
 			}
 		}
 	}
+
+	game::game(int npcs, int objs){
+		parser parser_system;
+		current = map();
+		mon_turns=0;
+		turn=0;
+		
+		random.seed(rand());
+		rand_mon_move = std::uniform_int_distribution<int>(-1, 1);
+		std::vector<Char_template*> char_templates = parser_system.parse_defs_file();
+		std::vector<Obj_template*> obj_templates = parser_system.parse_objs_file();
+		monsters = npcs;
+		objects = objs;
+        
+		me = new Player();
+		me->Sprite=pc_sprite;
+		me->speed=pc_speed;
+		me->alive=1;
+		me->priority=pc_speed;
+		while(me->pos[0] == 0 && me->pos[1] == 0){
+			int x = (rand()%(rows-2)) + 1;
+			int y = (rand()%(columns-2)) + 1;
+			if(current.layout[y][x].type == tile_type_floor){
+				me->pos[0] = y;
+				me->pos[1] = x; 
+				current.layout[y][x].pc = me;
+			}
+		}
+
+		for(int i = 0; i <= npcs; i++){
+			Monster* mon = new Monster();
+			int char_no = rand()%char_templates.size();
+			Character* c = new Character(char_templates[char_no]);
+			mon->ch = c;
+			mon->Sprite = c->Sprite;
+			while(mon->pos[0] == 0 && mon->pos[1] == 0){
+				int x = (rand()%(rows-2)) + 1;
+				int y = (rand()%(columns-2)) + 1;
+				if(current.layout[y][x].type == tile_type_floor && !(current.layout[y][x].mon)){
+					mon->pos[0] = y;
+					mon->pos[1] = x;
+					current.layout[y][x].mon = mon;
+				}
+			}
+			mon->speed = mon->ch->Speed;
+			mon->attribs = mon->ch->Attribs;
+			mon->path_to_player = NULL;
+			mon->last_pc_pos[0] = 255;
+			mon->last_pc_pos[1] = 255;
+			mon->alive = 1;
+
+			turn_queue.push(mon, mon->speed + pc_speed);
+		}
+
+		for(int i = 0; i <= objs; i++){
+			int obj_no = rand()%obj_templates.size();
+			Object* o = new Object(obj_templates[obj_no]);
+			int placed = 0;
+			while(!placed){
+				int x = (rand()%(rows-2)) + 1;
+				int y = (rand()%(columns-2)) + 1;
+				if(current.layout[y][x].type == tile_type_floor && !(current.layout[y][x].obj)){
+					o->pos[0] = y;
+					o->pos[1] = x;
+					current.layout[y][x].obj = o;
+					placed = 1;
+				}
+			}
+			obj_vect.push_back(o);
+		}
+
+		int upstair_y = 0;
+		int upstair_x = 0;
+		int downstair_y = 0;
+		int downstair_x = 0;
+		
+		while(upstair_y == 0 && upstair_x == 0){
+			int x = (rand()%(rows-2)) + 1;
+			int y = (rand()%(columns-2)) + 1;
+			if(current.layout[y][x].type == tile_type_floor && current.layout[y][x].mon == NULL && current.layout[y][x].pc == NULL){
+				upstair_y = y;
+				upstair_x = x; 
+				current.layout[y][x].type = tile_type_upstair;
+			}
+		}
+		
+		while(downstair_y == 0 && downstair_x == 0){
+			int x = (rand()%(rows-2)) + 1;
+			int y = (rand()%(columns-2)) + 1;
+			if(current.layout[y][x].type == tile_type_floor && current.layout[y][x].mon == NULL && current.layout[y][x].pc == NULL){
+				downstair_y = y;
+				downstair_x = x; 
+				current.layout[y][x].type = tile_type_downstair;
+			}
+		}
+		parser_system.kill_mon_defs(char_templates);
+		parser_system.kill_obj_defs(obj_templates); 
+	}
 	
 	game::~game(){
 		delete me;
+		//delete &current;
+		while(turn_queue.get_size() > 0){
+			Monster* mon = (Monster*) turn_queue.pull();
+			if(mon->ch != NULL) delete mon->ch;
+			delete mon;
+		}
+		while(obj_vect.size() > 0){
+			Object* tmp = obj_vect.back();
+			delete tmp;
+			obj_vect.pop_back();
+		}
+		parser parser_system;
+
 	}
 
 	void game::save_game(){
@@ -97,8 +206,15 @@
 	
 	void game::change_floor(){
 		delete mon_list;
-		
+		while(obj_vect.size() > 0){
+			Object* tmp = obj_vect.back();
+			delete tmp;
+			obj_vect.pop_back();
+		}
+		parser parser_system;
 		current = map();
+		std::vector<Char_template*> char_templates = parser_system.parse_defs_file();
+		std::vector<Obj_template*> obj_templates = parser_system.parse_objs_file();
 		
 		me->priority = me->speed;
 		me->pos[0] = 0;
@@ -113,38 +229,48 @@
 			}
 		}
 		
-		for(int i = 0; i <= num_npcs; i++){
+		for(int i = 0; i <= monsters; i++){
 			Monster* mon = new Monster();
+			int char_no = rand()%char_templates.size();
+			Character* c = new Character(char_templates[char_no]);
+			mon->ch = c;
+			mon->Sprite = c->Sprite;
 			while(mon->pos[0] == 0 && mon->pos[1] == 0){
 				int x = (rand()%(rows-2)) + 1;
 				int y = (rand()%(columns-2)) + 1;
-				if(current.layout[y][x].type == tile_type_floor){
+				if(current.layout[y][x].type == tile_type_floor && !(current.layout[y][x].mon)){
 					mon->pos[0] = y;
 					mon->pos[1] = x;
 					current.layout[y][x].mon = mon;
 				}
 			}
-			mon->speed = 5 + (rand()%16);
-			mon->attribs = 0;
+			mon->speed = mon->ch->Speed;
+			mon->attribs = mon->ch->Attribs;
 			mon->path_to_player = NULL;
 			mon->last_pc_pos[0] = 255;
 			mon->last_pc_pos[1] = 255;
-			mon->alive = 255;
-			
-			int intelligence = rand()%2;
-			int telepathic = rand()%2;
-			
-			if(intelligence) mon->attribs += IS_SMART;
-			if(telepathic) mon->attribs += TELEPATHIC;
-			
-			if(mon->attribs == 0) mon->Sprite = '0';
-			else if(mon->attribs == 1) mon->Sprite = '1';
-			else if(mon->attribs == 2) mon->Sprite = '2';
-			else mon->Sprite = '3';
-			
+			mon->alive = 1;
+
 			turn_queue.push(mon, mon->speed + pc_speed);
 		}
-		
+
+		for(int i = 0; i <= objects; i++){
+			int obj_no = rand()%obj_templates.size();
+			Object* o = new Object(obj_templates[obj_no]);
+			int placed = 0;
+			while(!placed){
+				int x = (rand()%(rows-2)) + 1;
+				int y = (rand()%(columns-2)) + 1;
+				if(current.layout[y][x].type == tile_type_floor && !(current.layout[y][x].obj)){
+					o->pos[0] = y;
+					o->pos[1] = x;
+					current.layout[y][x].obj = o;
+					placed = 1;
+				}
+			}
+			obj_vect.push_back(o);
+		}
+
 		int upstair_y = 0;
 		int upstair_x = 0;
 		int downstair_y = 0;
@@ -169,6 +295,8 @@
 				current.layout[y][x].type = tile_type_downstair;
 			}
 		}
+		parser_system.kill_mon_defs(char_templates);
+		parser_system.kill_obj_defs(obj_templates); 
 	}
 	
 	int game::turn_system(){

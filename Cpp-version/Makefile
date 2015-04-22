@@ -1,9 +1,8 @@
 CC=g++
-CFLAGS= -std=c++11 -g -lncurses
-LDFLAGS= -std=c++11 -g -lncurses
+CFLAGS= -std=c++11 -ggdb -lncurses
+LDFLAGS= -std=c++11 -ggdb -lncurses
 
-SOURCES=dungeon.cpp libs/map.cpp libs/pqueue.cpp libs/dijkstra.cpp libs/display.cpp libs/game.cpp libs/parser.cpp
-OBJECTS=dungeon.o map.o pqueue.o dijkstra.o display.o game.o parser.o
+OBJECTS=dungeon.o map.o pqueue.o dijkstra.o display.o game.o parser.o dice.o character.o object.o char_template.o obj_template.o
 EXECUTABLE=dungeon
 
 define compcom

@@ -1,67 +1,28 @@
-Assignment 1.08 - Parsing Object Definitions
+Assignment 1.09 - Loading Monster and Object Definitions (Now in Color!)
 
-Does it work? Yes (Yay!)
+Does it work? - I believe so
 
-How does it work? 
-	Well, it's similar
-	Dungeon is executed and, if no arguments are present, the parser is called	
-	The Parser will look for a text file in the directory ~/.rlg229/ called object_desc.txt.
-		- The filename itself is editable by changing the field 'objs_filename' in values.hpp.
-		- The path can't be changed.
-		- You will have to provide one yourself. This will also create the directory if not present
-			- It won't create the file itself though.
-		- File is loaded into a string vector, which is easier to access and doesn't require the file to be open afterward
-		- File is then closed and the vector is used to parse the information.
-		- Each line is ran through the parser and parser looks for the keywords given on the assignment spec
-		- Throughout this process, error checking is performed
-			- If a line containing "RLG229 OBJECT DESCRIPTION" isn't found, it won't read the file
-			- While reading through a valid file, if no "BEGIN OBJECT" tag can be found, data will be ignored until it can find one
-			- If a "BEGIN OBJECT" comes before an "END", the current object data is thrown out and a new obj_template created
-			- If all the fields of an object aren't found, the program will toss it.
-		- Once every line is fully parsed, another vector, of type obj_template, is returned, containing all the object information.
-	For this assignment, all we had to do is output, so program goes ahead and outputs the file, formatted properly.
-		- This is done by the output_obj_defs function in the parser.
-		- It iterates through the definition vector and outputs them in a nice format.
-			- I didn't see a specific format in the assignment spec, but ordered it according to the spec list of variables.
-	Function then returns, not calling the game (for this assignment only.)
+How to make it work:
+	- Run the program by using ./dungeon <number of monsters> <number of objects>
+	- There's some other command line utils, but they don't work as of right now.
 	
 Code locations:
-	parser.cpp/.hpp - The parser itself
-		- Contains three new functions:
-			- parse_objs_file
-				- This is the parser, in it's entirety.
-				- It takes a data file in and looks for the proper data for each field.
-				- A couple error prevention measures have been taken, but not as many as I'd like.
-			- output_obj_defs
-				- This is the outputter for obj definitions.
-				- It is properly formatted and able to show all parsed in data.
-				- Data should be shown almost as it was read in
-					- Please look in parser.cpp to see the parser's code
-					- I promise that I'm actually storing the stuff, not just printing it out again.
-			- check_object
-				- This is the object error checker
-					- It works by checking all fields of the object and seeing if they're null
-					- If it finds a problem, a zero is returned, which will cause the objects deletion.
-					- It has been checked over for bugs and seems to work fine.
-	structs.hpp - Contains new one data structure
-		- obj_template
-			- Holds all information for a properly parsed in monster.
-			- Information on the data fields will be in the code commentary.
-	values.hpp - Contains a new setting field for the file and a block of item types
-		- Setting field name is objs_filename, as mentioned above.
-		- The item type block makes it a lot easier to set a bitfield for the item types
-			- It should contain a bit for all the different item types that are possible
-			- Also has room for expansion if need be. Still needs populated though.
-	dungeon.cpp - Contains the code to call the parser, along with some error prompts.
-		- If you really want to see this, look at lines 67-78.
+	- display.hpp/.cpp
+		- Contains a new method: redraw_with_templates
+			- This method fully supports the parsed in character data
+			- It also is able to print everything in specific colors.
+	- game.hpp/.cpp
+		- Contains a new constructor that can handle the object and monster templates
+			- Parsing for this takes place in the second constructor.
+			- it is Game::Game(int npcs, int objs) & can be found at lines 84-179.
+	- dungeon.cpp
+		- Holds the main calling code to the new functions for template-based displays.
+		- Code to run the game's display can be found at either:
+			- Lines 21-47
+			- Lines 90-111
 		
 Notes:
-	- When you run dungeon with no args, it will only show you the object parser output.
-	- If you really need to run the game, which I've been told is unnecessary, just
-	put any argument after ./dungeon. If you want to see the monster output, run ./dungeon with
-	two random arguments.
-	
-	- Also, the game is still not functioning properly at this point due to an error in the
+	- The game is still not functioning properly at this point due to an error in the
 	new turn system. I am working on this and advise that the game not be played for now.
 	Besides, the save/load system doesn't do anything yet. This is due to me rewriting the
 	entire game in C++, which has been a longer task than expected, but is turning out nicely.
