@@ -1,4 +1,6 @@
 #include "object.hpp"
+#include <sstream>
+#include <iostream>
 
 Object::Object(Obj_template* obj){
 	Name = obj->Name;
@@ -7,7 +9,7 @@ Object::Object(Obj_template* obj){
 	Sprite = determine_sprite();
 	Color = obj->Color;
 	Hit = obj->Hit->roll();
-	Damage = obj->Damage;
+	Damage = new Dice(obj->Damage);
 	Dodge = obj->Dodge->roll();
 	Defense = obj->Defense->roll();
 	Weight = obj->Weight->roll();
@@ -19,7 +21,7 @@ Object::Object(Obj_template* obj){
 }
 
 Object::~Object(){
-
+	delete Damage;
 }
 
 char Object::determine_sprite(){
@@ -43,4 +45,12 @@ char Object::determine_sprite(){
 	else if(Type == WAND) return SPT_WAND;
 	else if(Type == CONTAINER) return SPT_CONTAINER;
 	else return SPT_NON;
+}
+
+std::string Object::print_obj(){
+	char buffer[70];
+	sprintf(buffer, "%s A: %s W: %d", Name.c_str(), Damage->report_data().c_str(), Weight);
+	std::string built = "";
+	built.assign(buffer);
+	return built;
 }

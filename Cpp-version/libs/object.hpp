@@ -12,6 +12,8 @@ class Object{
 		Object(Obj_template* obj);
 		~Object();
 		char determine_sprite();
+		std::string print_obj();
+		
 		std::string Name; 						//Name of the object
 		std::vector<std::string> Description; 	//Must be no longer than 77 chars in width;
 		uint32_t Type; 							//Object Type. Populated using a bitfield.

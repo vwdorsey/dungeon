@@ -2,8 +2,9 @@
 #define MAP_H
 
 #include <random>
-#include "structs.hpp"
 #include "values.hpp"
+#include "tile.hpp"
+#include "room.hpp"
 
 class map{
 	public:

@@ -98,24 +98,31 @@
 #define num_pad_lfdn '1'
 #define num_pad_rgup '9'
 #define num_pad_rgdn '3'
-#define kb_up 'w'
-#define kb_down 's'
-#define kb_left 'a'
-#define kb_right 'd'
-#define kb_lfup 'q'
-#define kb_lfdn 'z'
-#define kb_rgup 'e'
-#define kb_rgdn 'x'
+#define kb_up 'u'
+#define kb_down 'j'
+#define kb_left 'h'
+#define kb_right 'k'
+#define kb_lfup 'y'
+#define kb_lfdn 'n'
+#define kb_rgup 'i'
+#define kb_rgdn 'm'
 #define go_upstairs '<'
 #define go_downstairs '>'
 #define rest ' '
 #define to_look_mode 'L'
 #define to_control_mode 27
 #define save_and_exit 'S'
+#define wear_item 'w'
+#define remove_equip 't'
+#define drop_item 'd'
+#define remove_item 'x'
+#define yes 'y'
+#define no 'n'
 
 //Player Settings
 #define pc_sprite '@'
 #define pc_speed 10
+#define pc_hitpoints 100
 
 //Ncurses Color Settings
 #define BLACK 1
@@ -125,7 +132,8 @@
 #define BLUE 5
 #define MAGENTA 6
 #define CYAN 7
-#define GREY 8 //To be used as a custom color.
-#define LIGHTGREY 9 //To be used as a custom color.
+#define EQUIP 8 //GREEN & WHITE.
+#define BACKPACK 9 //BLUE & WHITE.
+#define DIALOG 10 //YELLOW & BLACK.
 
 #endif

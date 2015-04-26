@@ -7,6 +7,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <cstring>
 #include "libs/game.hpp"
 #include "libs/display.hpp"
 #include "libs/parser.hpp"
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
 		disp.redraw_with_templates(current_game->current.layout, current_game->me);
 		while(endflag == 1){
 			turn_status = 1;
-			endflag = current_game->user_move();
+			endflag = current_game->user_move(disp);
 			while(turn_status == 1){
 				turn_status = current_game->turn_system();
 				if(turn_status == -1) endflag = 0;
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	else if(argc == 2){
-		if(argv[1] == "-m"){
+	  if(strcmp(argv[1],"-m")){
 			std::cout << "Parsing the Monster Definitions located in " << defs_filename << '\n';
 			std::vector<Char_template*> mon_defs = parser_system.parse_defs_file();
 			if(mon_defs.size() == 0){
@@ -60,7 +61,7 @@ int main(int argc, char **argv)
 			
 			parser_system.kill_mon_defs(mon_defs);
 		}
-		else if(argv[1] == "-o"){
+		else if(strcmp(argv[1],"-o")){
 			std::cout << "Parsing the Object Definitions located in " << objs_filename << '\n';
 			std::vector<Obj_template*> obj_defs = parser_system.parse_objs_file();
 			if(obj_defs.size() == 0){
@@ -74,7 +75,7 @@ int main(int argc, char **argv)
 			
 			parser_system.kill_obj_defs(obj_defs);
 		}
-		else if(argv[1]== "-h"){
+		else if(strcmp(argv[1],"-h")){
 			std::cout << "RLG229 Game v. 1.09\n";
 			std::cout << "Command Args:\n";
 			std::cout << "-h = Displays this help text.";
@@ -97,7 +98,7 @@ int main(int argc, char **argv)
 		disp.redraw_with_templates(current_game->current.layout, current_game->me);
 		while(endflag == 1){
 			turn_status = 1;
-			endflag = current_game->user_move();
+			endflag = current_game->user_move(disp);
 			while(turn_status == 1){
 				turn_status = current_game->turn_system();
 				if(turn_status == -1) endflag = 0;
@@ -105,8 +106,8 @@ int main(int argc, char **argv)
 			disp.redraw_with_templates(current_game->current.layout, current_game->me);
 		}
 
+		std::cout << current_game->turn_queue.get_size() <<'\n';
 		disp.end_session();
-		
 		delete current_game;
 		return 0;
 	}

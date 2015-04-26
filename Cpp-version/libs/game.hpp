@@ -7,6 +7,7 @@
 #include <iostream>
 #include "obj_template.hpp"
 #include "char_template.hpp"
+#include "display.hpp"
 
 class game{
 	public:
@@ -15,7 +16,7 @@ class game{
 		~game();
 	
 		map current;
-		Player* me;
+		PC* me;
 		Monster* mon_list;
 		std::vector<Object*> obj_vect;
 		pqueue turn_queue;
@@ -27,8 +28,9 @@ class game{
 		void load_game();
 		void change_floor();
 		int turn_system();
+		int do_battle(Monster* m);
 		
-		int user_move();
+		int user_move(display disp);
 		int interpret_input(char input);
 	private:
 		struct cell{

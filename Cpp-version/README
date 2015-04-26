@@ -1,28 +1,85 @@
-Assignment 1.09 - Loading Monster and Object Definitions (Now in Color!)
+Assignment 1.10 - New Battle System and Interacting With Items
 
-Does it work? - I believe so
+Does it work? - Some of it does
+
+What does:
+	- Menus and prompts for the drop and expunge both work well.
+	- The combat system seems to be working in at least one direction.
+		- As in I can kill the monsters, but they haven't killed me yet.
+		- This may actually be due to bad/missing pathfinding algorithms
+		- I tried implementing Dijkstra's to make it work, but the game slowed to a crawl.
+	- Item pickups do work.
+	- All the new commands do stuff.
+	- There doesn't seem to be any memory leaks or errors.
+
+What doesn't:
+	- The whole equipment system currently.
+	- The menu for the equip system beyond drawing.
 
 How to make it work:
 	- Run the program by using ./dungeon <number of monsters> <number of objects>
-	- There's some other command line utils, but they don't work as of right now.
+	- You can also run it in a default configuration by just running it as ./dungeon
+	- Here is the entire control scheme:
+		- Keyboard
+			u - up
+			h - left
+			j - down
+			k - right
+			y - left-up
+			i - right-up
+			n - left-down
+			m - right-down
+		- Keypad
+			8 - up
+			4 - left
+			2 - down
+			6 - right
+			7 - left-up
+			9 - right-up
+			1 - left-down
+			3 - right-down
+		- Shared/Commands
+			< - Go Upstairs
+			> - Go Downstairs
+			w - open Wear Item menu
+			d - open Drop Item menu
+			x - open Expunge Item Menu
+			t - open Remove Equipment menu
+			Space - rest for a turn
+			Esc - Cancel for menus
 	
 Code locations:
 	- display.hpp/.cpp
-		- Contains a new method: redraw_with_templates
-			- This method fully supports the parsed in character data
-			- It also is able to print everything in specific colors.
+		- Contains several new methods:
+			void draw_equip_menu(PC* me, int mode);
+				- Draws the equipment menu with items from the equipment struct
+				- It isn't working beyond the drawing
+			void draw_backpack_menu(PC* me, int mode);
+				- Draws the backpack menu with items that the PC is carrying
+				- Has 3 modes:
+					1 - Equip Item
+					2 - Put Item on Floor
+					3 - Expunge Item from Game
+			void AYS_prompt();
+				- Used as a check to see if you want to leave the game.
+			void prompt(std::string text);
+				- Used to quickly generate error prompts when need be.
 	- game.hpp/.cpp
-		- Contains a new constructor that can handle the object and monster templates
-			- Parsing for this takes place in the second constructor.
-			- it is Game::Game(int npcs, int objs) & can be found at lines 84-179.
-	- dungeon.cpp
-		- Holds the main calling code to the new functions for template-based displays.
-		- Code to run the game's display can be found at either:
-			- Lines 21-47
-			- Lines 90-111
+		- Commented out the old constructor
+		- Added new flags for the new control methods in interpret_input and user_move
+	- character.hpp/.cpp
+		- Added the new subclasses for PC and Monster
+			- Also modified the constructors to better suit the new subclasses
+	- point.hpp, tile.hpp, room.hpp
+		- These are where I moved the structs to reduce circular includes.
+	- There are some others, but there were a lot of code changes this round.
 		
 Notes:
-	- The game is still not functioning properly at this point due to an error in the
-	new turn system. I am working on this and advise that the game not be played for now.
-	Besides, the save/load system doesn't do anything yet. This is due to me rewriting the
-	entire game in C++, which has been a longer task than expected, but is turning out nicely.
+	- Due to lack of time during my conversion from C to C++, a good number of the old
+	features aren't present or do not work optimally. These include:
+		- the smart, non-telepathic pathfinder (is sorta present)
+		- the dumb, telepathic pathfinder (not present)
+		- the dumb, non-telepathic pathfinder (not present)
+		- Look mode
+		- and other things that I can't remember.
+	- This will cause things to not operate correctly.

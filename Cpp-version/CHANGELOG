@@ -1,56 +1,67 @@
-Assignment 1.08 - Parsing Object Definitions
+Assignment 1.10 - New Battle System and Interacting With Items
 
-Sunday, 4/12
+Wednesday, 4/22
 	
-	- Started this assignment by doing a lot of cleanup and code rearrangement on the project
-		- Makefile reimplemented to be far more generic and easier to manage.
-		- Several structs made into classes
-			- Includes object and character templates and the dice struct.
-				- Object Template = obj_template.cpp/.hpp
-				- Character Template = char_template.cpp/.hpp
-				- Dice = dice.cpp/.hpp
-			- Also involves a new Object and Character class
-				- Object = object.cpp/.hpp
-				- Character = character.cpp/.hpp
-			- This allowed me to move code around and make small, but useful functions for specific things.
-			- Also cut down on the risk of circular includes.
+	- Started this assignment by working on a few small bugfixes.
+		- Mainly one related to 
+	- Didn't have much time to work on this.
+		- You try working on projects, other homework, and studying for several tests.
 
-Monday, 4/13
+Thursday, 4/23
 
-	- Spent most of today moving code into new classes/new locations
-		- Created the Dice, Object, Obj_template, Character, and Char_template classes.
-			- All of these have the same structure as the structs they're derived from
-			- Only real differences are 
-			 	- it's easy to call them 
-			 	- I added utility functions to said classes to make them more useful.
+	- Redid some of the inheritance within the Character class
+		- Made the Monster and PC subclasses to replace the Player and Monster Structs
+		- Simplified the code structure
+		- It also caused a large explosion of errors due to legacy code
+		- This took quite a while to smooth out.
+	- Rearranged the control scheme to accept the new commands
+		- The keyboard control scheme was the most affected
+		- A full config will be written in the readme.
+		- All controls are present.
 
-Tuesday, 4/14
+Friday, 4/24
 
-	- Continued and finished rewriting classes
-		- Took care of the new Game constructor to make all the new characters and objects
-		- Also added the color palattes to the display class and actually tested them
-			- Made the old renderer look very interesting, but in a good way.
+	- Continued implementing the inheritance stuffs
+		- I ended up needing to implement several new header files to eliminate circular includes
+		- The point, room, and tile structs ended up getting moved to their own files.
+			- This made the include structure a lot simpler to work with.
+	- Sorted out all the menu functions and wrote the functions for the menus and prompts
+		- This took quite a while to actually get figured out, as drawing took a while to figure out
+		- It started with the "Are you sure?" exit prompt
+			- I intended to use this far more than for exit, but it never got implemented further.
+		- Implemented the backpack menu next, as it was easier to do.
+			- Listing the items did crop up some issues, such as strange segfaults, but they cleaned up well.
 
-	- Implemented the new display function, redraw_with_template, to handle the color and sprites
-		- Required a deviation from the original format 
-			-Replacd the active screen char array with one made of containers
-				- Container is draw_container and has 2 elements, a char for Sprite and a short for Color
-
-Wednesday, 4/15 - Past Deadline
+Saturday, 4/25
+	- Tried to get the 
+	- Got the item pickup system working to a degree.
+		- Item picking up was rather easy to implement with a vector
+			- Just shifted it into the vector
+			- Also had to do check to make sure no more than 10 items were in the vector
+			- Tried with an array, but this caused issues
+		- Item dropping was a bit interesting to implement.
+			- Had to pull the item from the vector and put it in a temp object pointer
+			- Then I shoved the pointer into the tile below the character
+			- Also created a simple error message when a user tried to put two items on the same tile
+				- My game doesn't support that for now.
+		- Item expunging was rather easy
+	- Got some of the combat system working, but it's hard to tell if it works
+		- This is due to the faulty pathfinding
+			- I did try to get the smart monster pathfinding working, but it didn't go well
+			- Decided to implement something to make the pathfinder simple enough to make the monsters come close.
+	- Wrote this Changelog and Readme.
 	
-	- Worked on ironing out all the bugs that had been cropping up
-		- Several prevalent ones were
-			- Memory leaks, as usual
-				- Fixed by examining code and Valgrind output
-				- Main cause was simply forgetting to deallocate
-				- There's about 230k-240k memory that isn't being dealloced by ncurses though
-			- Changing something in one place and forgetting to do it elsewhere
-				- This would really be due to being tired and trying to think about what I'm doing
-				- The only way to fix this is to just track everything down and make changes
-			- Object characters wouldn't display right
-				- Most would be the same or the '*'/not valid character.
-				- Type values would also be off the charts and not be useful
-				- One Fix: Appearantly, code got deleted that set the sprite
-					- This caused a method to determine the sprite to return a char/memory address to an unsigned int.
-				- The other fix: Tried to set sprite = to character when I needed to return the character
-					- Not sure what it was returning then. Memory Address perhaps
+Major bugs for this run:
+	- The dice values were improperly displayed for the longest time.
+		- It took a long while to figure this one out
+		- The dice printer seemed to have issues with getting the data out properly
+		- I tried troubleshooting in various locations
+		- Finally, the fix was to copy the damage dice to the object being built
+		- It worked well after that, although it took forever to figure it out
+	- Double free or corruption 
+		- Another copying issue
+		- It caused a lot of issues with destructors
+		- Fixed by copying anything that needs memory allocations.
+	- Command line args
+		- Had to fix the command line args with string comparisons.
+

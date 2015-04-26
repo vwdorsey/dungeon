@@ -1,9 +1,9 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-#include "structs.hpp"
 #include "char_template.hpp"
 #include "obj_template.hpp"
+#include "values.hpp"
 
 class parser{
 	public:

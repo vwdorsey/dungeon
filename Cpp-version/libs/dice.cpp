@@ -9,6 +9,12 @@ Dice::Dice(int b, int n, int s){
 	sides = s;
 }
 
+Dice::Dice(Dice* original){
+	base = original->base;
+	num_dice = original->num_dice;
+	sides = original->sides;
+}
+
 Dice::Dice(std::string in_string, int init_offset){
 	std::string base_s = in_string.substr(init_offset, in_string.find_first_of('+')-3);
 	std::string num_s = in_string.substr(in_string.find("+")+1, in_string.find("d")- in_string.find("+")-1);

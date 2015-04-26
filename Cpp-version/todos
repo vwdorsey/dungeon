@@ -1,0 +1,67 @@
+TODOS FOR 1.10:
+
+PC:
+	Add the equipment slots - PRESENT, BUT UNSURE IF IT'S RIGHT APPROACH.
+		WEAPON - a
+		OFFHAND - b
+		RANGED - c
+		ARMOR - d
+		HELMET - e
+		CLOAK - f
+		GLOVES - g
+		BOOTS - h
+		AMULET - i
+		LIGHT - j
+		RING - k
+		RING - l
+	Add the 10 carry slots (0-9) - PRESENT AS OBJECT VECTOR
+	Default Hitpoints - SET AS 100 
+
+MONSTERS: (Mainly old stuff that didn't get implemented)
+	Dumb, non-telepathic paths. (OLD STUFF)
+	Dumb, telepathic paths. (OLD STUFF)
+	Smart, non-telepathic paths. (OLD STUFF) - Sorta works, but bogs the game down to oblivion.
+		Going to switch to a dumb, non-telepathic path for this assignment.
+
+MENUS/PROMPTS:
+	Equipment Menu - NO LISTING YET, BUT WINDOW IS THERE.
+	Backpack Menu - SHOULD WORK.
+	"Are you sure?" Prompt - Works for the exit.
+	Status ticker?
+	
+GAMEPLAY:
+	Implement new control scheme: - FINISHED
+		w - Wear an item.
+		t - Take off item. 
+		d - Drop item. - Works Fully
+		x - Expunge Item. - Works Fully
+	Implement Look Mode, if time allows. (OLD STUFF)
+	Make it so that items are picked up from the tile. - WORKS.
+
+CHARACTER CONTROL: - CHANGED
+
+COMBAT SYSTEM:
+	NPCs no longer kill NPCs - This is taken care of.
+		Instead, move the NPC in a random direction. - Changed to swap method. Should work.
+	PC-NPC Combat initiated by attempts to move into each other's cell. - Works, I think.
+	All Attempted Attacks Connect - Hard to tell.
+	When attack connects, -It's coded properly, but hard to tell if it's working.
+		damage is done by rolling dice, totalling, and deducting from other's HP
+			NPCs only have 1 damage dice
+			PCs have bare hand and weapon.
+		If hitpoints of character < 0. Character.alive = 0.
+			PC.alive = 0 causes game to end, as usual.
+
+OVERHAULS:
+	See about fixing the character class to actually use inheritance. - I THINK I TOOK CARE OF THIS.
+		This may simplify things a lot.
+
+BUGS:
+	Double Free or Corruption related to Game:187 - Fixed.
+	Fix the command line args, if not fixed - Fixed I think.
+	Displayed Dice Values on menus are not correct at all.
+		The actual values though are entirely correct.
+	
+NOTES:
+	Include full control scheme in Readme.
+	

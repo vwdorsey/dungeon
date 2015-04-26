@@ -8,6 +8,7 @@ class Dice{
 		Dice();
 		Dice(int b, int n, int s);
 		Dice(std::string in_string, int init_offset);
+		Dice(Dice* original);
 		~Dice();
 		int roll();
 		std::string report_data();
